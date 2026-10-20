@@ -1,0 +1,23 @@
+# Supabase 서버 함수(Edge Functions) 배포 — Actions 탭에서 수동 실행
+# 필요한 Secrets: SUPABASE_ACCESS_TOKEN (supabase.com > Account > Access Tokens), SUPABASE_PROJECT_REF
+name: Deploy Supabase Functions
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+    paths: ["supabase/functions/**"]
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      SUPABASE_ACCESS_TOKEN: ${{ secrets.SUPABASE_ACCESS_TOKEN }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: supabase/setup-cli@v1
+        with:
+          version: latest
+      - run: supabase functions deploy admin-users --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
+      - run: supabase functions deploy change-password --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}
+      - run: supabase functions deploy notify --no-verify-jwt --project-ref ${{ secrets.SUPABASE_PROJECT_REF }}

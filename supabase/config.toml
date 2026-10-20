@@ -1,0 +1,5 @@
+project_id = "leadership-reading"
+
+[functions.notify]
+# 예약 실행(pg_cron)은 로그인 토큰 없이 호출하므로 CRON_SECRET 헤더로 확인합니다.
+verify_jwt = false

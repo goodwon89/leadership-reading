@@ -1,0 +1,14 @@
+{
+  "name": "리더십 2년차 독서교육",
+  "short_name": "리더십 독서",
+  "description": "상상인그룹 '27 리더십 2년차 독서교육 플랫폼",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAFAF9",
+  "theme_color": "#FAFAF9",
+  "icons": [
+    { "src": "icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

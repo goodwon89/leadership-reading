@@ -1,0 +1,380 @@
+<!doctype html>
+<html lang="ko"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>출시 전 점검 보고서 · 리더십 2년차 독서교육 플랫폼 · 2026-10-20</title>
+<style>
+:root{--ink:#111827;--sub:#4b5563;--mute:#9ca3af;--line:#e5e7eb;--bg:#f3f4f6;--card:#fff;
+--crit:#dc2626;--crit-bg:#fef2f2;--miss:#ea580c;--miss-bg:#fff7ed;--warn:#ca8a04;--warn-bg:#fefce8;--ok:#16a34a;--ok-bg:#f0fdf4;--na:#9ca3af;
+--brand:#f97316;--navy:#0f172a}
+*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.6 -apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Pretendard","Malgun Gothic",system-ui,sans-serif;letter-spacing:-.01em}
+.wrap{max-width:920px;margin:0 auto;padding:0 16px 48px}
+/* header */
+.top{background:var(--navy);color:#fff}
+.top .wrap{padding:22px 16px 84px}
+.brandrow{display:flex;justify-content:space-between;align-items:center;font-size:12px;color:#cbd5e1;letter-spacing:.04em}
+.logo{display:flex;align-items:center;gap:8px;font-weight:700;color:#fff;letter-spacing:0}
+.logo i{width:22px;height:22px;border-radius:6px;background:var(--brand);display:inline-block;position:relative}
+.logo i:after{content:"";position:absolute;left:6px;top:4px;width:6px;height:11px;border:solid #fff;border-width:0 2.5px 2.5px 0;transform:rotate(45deg)}
+.top h1{font-size:28px;line-height:1.3;margin:22px 0 6px;letter-spacing:-.02em}
+.top .site{color:#e2e8f0;font-size:15px}
+.top .site b{color:#fff}
+.chips{display:flex;flex-wrap:wrap;gap:6px;margin-top:14px}
+.chip{font-size:12px;padding:3px 10px;border-radius:999px;background:rgba(255,255,255,.08);color:#cbd5e1;border:1px solid rgba(255,255,255,.12)}
+/* hero card */
+.hero{margin-top:-64px;background:var(--card);border-radius:18px;box-shadow:0 10px 30px rgba(15,23,42,.08);padding:24px;display:grid;grid-template-columns:auto 1fr;gap:28px;align-items:center}
+.gauge{--p:50;width:150px;height:150px;border-radius:50%;background:conic-gradient(var(--brand) calc(var(--p)*1%),#f1f5f9 0);display:grid;place-items:center}
+.gauge div{width:118px;height:118px;border-radius:50%;background:#fff;display:grid;place-items:center;text-align:center}
+.gauge b{font-size:38px;line-height:1;letter-spacing:-.03em}.gauge span{font-size:12px;color:var(--sub);display:block;margin-top:4px}
+.verdict{display:inline-flex;align-items:center;gap:8px;font-weight:800;font-size:18px;padding:6px 14px;border-radius:10px}
+.v-red{background:var(--crit-bg);color:var(--crit)}.v-amber{background:var(--warn-bg);color:var(--warn)}.v-green{background:var(--ok-bg);color:var(--ok)}
+.dot{width:10px;height:10px;border-radius:50%;background:currentColor}
+.hero p{margin:10px 0 16px;color:var(--sub)}
+.counts{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+.cnt{border-radius:12px;padding:10px 12px}.cnt b{font-size:24px;display:block;line-height:1.2}.cnt span{font-size:12px}
+.c-crit{background:var(--crit-bg);color:var(--crit)}.c-miss{background:var(--miss-bg);color:var(--miss)}.c-warn{background:var(--warn-bg);color:var(--warn)}.c-ok{background:var(--ok-bg);color:var(--ok)}
+/* sections */
+h2{font-size:13px;letter-spacing:.08em;color:var(--sub);margin:36px 0 12px;text-transform:uppercase}
+h2 em{font-style:normal;color:var(--ink);font-size:18px;letter-spacing:-.01em;text-transform:none;display:block;margin-top:2px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px}
+.cat{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;text-decoration:none;color:inherit;display:block;transition:border-color .15s}
+.cat:hover{border-color:var(--brand)}
+.cat .t{display:flex;justify-content:space-between;align-items:baseline;font-weight:700}
+.cat .t small{font-weight:600;color:var(--sub)}
+.bar{display:flex;height:8px;border-radius:99px;overflow:hidden;background:#f1f5f9;margin:10px 0 8px}
+.bar i{display:block}.b-crit{background:var(--crit)}.b-miss{background:var(--miss)}.b-warn{background:var(--warn)}.b-ok{background:var(--ok)}
+.cat .n{font-size:12px;color:var(--sub);display:flex;gap:10px;flex-wrap:wrap}
+.prio{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden}
+.prio li{list-style:none;display:grid;grid-template-columns:28px auto 1fr;gap:10px;align-items:start;padding:14px 16px;border-top:1px solid var(--line)}
+.prio li:first-child{border-top:0}.prio ol{margin:0;padding:0}
+.num{width:24px;height:24px;border-radius:50%;background:var(--navy);color:#fff;font-size:12px;font-weight:700;display:grid;place-items:center}
+.tag{font-size:11px;font-weight:800;padding:2px 8px;border-radius:6px;white-space:nowrap;margin-top:2px}
+.t-crit{background:var(--crit);color:#fff}.t-miss{background:var(--miss-bg);color:var(--miss);border:1px solid #fed7aa}.t-warn{background:var(--warn-bg);color:var(--warn);border:1px solid #fde68a}.t-ok{background:var(--ok-bg);color:var(--ok);border:1px solid #bbf7d0}.t-na{background:#f3f4f6;color:var(--na);border:1px solid var(--line)}
+details{background:var(--card);border:1px solid var(--line);border-radius:14px;margin:12px 0;overflow:hidden}
+summary{cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:10px;padding:16px 18px;font-weight:800;font-size:16px}
+summary::-webkit-details-marker{display:none}
+summary .s{display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end}
+summary:after{content:"▾";color:var(--mute);margin-left:6px}details[open] summary:after{content:"▴"}
+.f{border-top:1px solid var(--line);padding:14px 18px 14px 22px;position:relative}
+.f:before{content:"";position:absolute;left:0;top:0;bottom:0;width:4px}
+.f.crit:before{background:var(--crit)}.f.miss:before{background:var(--miss)}.f.warn:before{background:var(--warn)}.f.ok:before{background:var(--ok)}.f.na:before{background:var(--line)}
+.f .h{display:flex;gap:8px;align-items:center;font-weight:700}
+.f .why{color:var(--sub);font-size:14px;margin-top:4px}
+.f.ok .why,.f.na .why{font-size:13px}
+.say{margin-top:10px;background:#fff7ed;border:1px dashed #fdba74;border-radius:10px;padding:10px 12px;font-size:14px}
+.say small{display:block;color:var(--miss);font-weight:700;font-size:11px;letter-spacing:.04em;margin-bottom:2px}
+.todo{margin-top:6px;font-size:13px;color:var(--sub)}.todo b{color:var(--ink)}
+code{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:12.5px;background:#f3f4f6;padding:1px 6px;border-radius:5px;word-break:break-all}
+.box{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 18px}
+.box li{list-style:none;padding:10px 0;border-top:1px solid var(--line);display:flex;gap:10px}.box li:first-child{border-top:0}.box ul{margin:0;padding:0}
+.ck{width:18px;height:18px;border:2px solid #cbd5e1;border-radius:5px;flex:none;margin-top:2px}
+.cmd{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+.cmd div{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;font-size:14px}
+.cmd b{display:block;font-size:15px;margin-bottom:2px}
+.scope{font-size:13px;color:var(--sub);background:var(--card);border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin-top:12px}
+footer{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-size:12px;color:var(--mute)}
+footer a{color:var(--sub);text-decoration:none}
+@media (max-width:640px){
+ .hero{grid-template-columns:1fr;justify-items:center;text-align:center}
+ .counts{grid-template-columns:repeat(2,1fr);width:100%}
+ .top h1{font-size:23px}
+ summary{flex-direction:column;align-items:flex-start}summary .s{justify-content:flex-start}
+}
+@media print{body{background:#fff}.top{-webkit-print-color-adjust:exact;print-color-adjust:exact}details{break-inside:avoid}details:not([open])>*{display:block}.hero{box-shadow:none;border:1px solid var(--line)}}
+
+.f .h{flex-wrap:wrap}.f .h .tech{font-weight:500;font-size:12px;color:var(--mute)}
+.f p{margin:8px 0 0;font-size:14.5px;color:#374151}
+.f p b{display:inline-block;min-width:92px;color:var(--ink);font-size:13px}
+.f p.now{color:var(--ink)}
+.dev{margin-top:8px;font-size:12px;color:var(--mute)}
+.glossary{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:6px 18px}
+.glossary div{padding:10px 0;border-top:1px solid var(--line);font-size:14px}.glossary div:first-child{border-top:0}
+.glossary b{display:inline-block;min-width:120px}
+@media (max-width:640px){.f p b{display:block;min-width:0;margin-bottom:2px}.glossary b{display:block}}
+</style></head><body>
+<header class="top"><div class="wrap">
+  <div class="brandrow"><span class="logo"><i></i>Launch Check</span><span>REPORT · 2026-10-20</span></div>
+  <h1>출시 전 점검 보고서</h1>
+  <div class="site"><b>'27 리더십 2년차 독서교육 플랫폼</b> · https://goodwon89.github.io/leadership-reading/ (배포 예정)</div>
+  <div class="chips"><span class="chip">React + Vite</span><span class="chip">GitHub Pages</span><span class="chip">Supabase</span><span class="chip">개인정보 수집 있음 (사내 임직원)</span><span class="chip">판매 없음</span><span class="chip">로그인 있음 · 공개 가입 없음</span></div>
+</div></header>
+<main class="wrap">
+<section class="hero">
+  <div class="gauge" style="--p:50"><div><span style="margin:0">통과율</span><b>50</b><span>17 / 34 항목</span></div></div>
+  <div>
+    <span class="verdict v-amber"><span class="dot"></span>조건부 가능</span>
+    <p>지금 바로 막아야 할 위험은 없어요. 데이터 권한, 비밀값 관리, 마감·잠금 처리는 잘 되어 있어요. 다만 오류가 나면 빈 화면이 되는 문제, 개인정보 안내문, 검색 노출 차단 같은 빠진 항목 6개를 85명에게 계정을 안내하기 전에 채우는 것을 권해요.</p>
+    <div class="counts">
+      <div class="cnt c-crit"><b>0</b><span>🚨 위험</span></div><div class="cnt c-miss"><b>6</b><span>❌ 없음</span></div>
+      <div class="cnt c-warn"><b>11</b><span>⚠️ 보완</span></div><div class="cnt c-ok"><b>17</b><span>✅ 정상</span></div>
+    </div>
+  </div>
+</section>
+<div class="scope"><b>이 보고서 읽는 법</b> · 항목마다 '이게 뭔가요 → 왜 필요한가요 → 지금 사이트는' 순서로 적었어요. 고치고 싶은 항목은 주황 점선 상자의 문장을 AI에게 그대로 말하면 돼요. 회색 '개발자용 근거'는 몰라도 괜찮아요.<br>점검 범위: 코드 점검 ✔ · 실제 주소 점검 ✕ (아직 배포 전이라 주소가 404예요) · 화면 크기별 확인 ✔ (데모 빌드로 9개 크기 × 15개 화면, 참가자·각 사 관리자·총괄 관리자) · 해당 없음 제외: 사이트맵·검색 등록, 이용약관, 사업자 정보, 마케팅 수신 동의, 쿠키 동의 배너, 이미지·영상</div>
+
+<h2>Summary<em>묶음별 결과</em></h2>
+<div class="grid">
+  <a class="cat" href="#c1"><div class="t">1. 보안 <small>5/8</small></div><div class="bar"><i class="b-warn" style="width:37.5%"></i><i class="b-ok" style="width:62.5%"></i></div><div class="n"><span>⚠️3</span><span>✅5</span></div></a>
+  <a class="cat" href="#c2"><div class="t">2. SEO <small>1/5</small></div><div class="bar"><i class="b-miss" style="width:60%"></i><i class="b-warn" style="width:20%"></i><i class="b-ok" style="width:20%"></i></div><div class="n"><span>❌3</span><span>⚠️1</span><span>✅1</span></div></a>
+  <a class="cat" href="#c3"><div class="t">3. 푸터 필수 요소 <small>0/2</small></div><div class="bar"><i class="b-miss" style="width:50%"></i><i class="b-warn" style="width:50%"></i></div><div class="n"><span>❌1</span><span>⚠️1</span></div></a>
+  <a class="cat" href="#c4"><div class="t">4. 화면 대응 <small>3/5</small></div><div class="bar"><i class="b-warn" style="width:40%"></i><i class="b-ok" style="width:60%"></i></div><div class="n"><span>⚠️2</span><span>✅3</span></div></a>
+  <a class="cat" href="#c5"><div class="t">5. 운영 기본 <small>2/5</small></div><div class="bar"><i class="b-miss" style="width:20%"></i><i class="b-warn" style="width:40%"></i><i class="b-ok" style="width:40%"></i></div><div class="n"><span>❌1</span><span>⚠️2</span><span>✅2</span></div></a>
+  <a class="cat" href="#c6"><div class="t">6. 데이터 <small>3/4</small></div><div class="bar"><i class="b-warn" style="width:25%"></i><i class="b-ok" style="width:75%"></i></div><div class="n"><span>⚠️1</span><span>✅3</span></div></a>
+  <a class="cat" href="#c7"><div class="t">7. 기록 시스템 <small>3/5</small></div><div class="bar"><i class="b-miss" style="width:20%"></i><i class="b-warn" style="width:20%"></i><i class="b-ok" style="width:60%"></i></div><div class="n"><span>❌1</span><span>⚠️1</span><span>✅3</span></div></a>
+</div>
+
+<h2>Priority<em>먼저 고칠 것</em></h2>
+<div class="prio"><ol>
+  <li><span class="num">1</span><span class="tag t-miss">없음</span><span><b>오류가 나면 빈 화면이 되는 문제</b><br><span style="color:var(--sub);font-size:14px">예상 못 한 오류가 나면 안내 없이 하얀 화면만 남아요. 데모에서 실제로 같은 일이 있었어요.</span></span></li>
+  <li><span class="num">2</span><span class="tag t-miss">없음</span><span><b>개인정보 수집·이용 안내</b><br><span style="color:var(--sub);font-size:14px">이름·사번·소속·회사 메일과 작성 내용을 모으는데, 무엇을 왜 모으는지 알려 주는 문서가 없어요.</span></span></li>
+  <li><span class="num">3</span><span class="tag t-miss">없음</span><span><b>검색 노출 차단</b><br><span style="color:var(--sub);font-size:14px">사내 전용 사이트인데 구글·네이버 검색에 뜨지 않게 막는 설정이 없어요.</span></span></li>
+  <li><span class="num">4</span><span class="tag t-miss">없음</span><span><b>링크 공유 미리보기</b><br><span style="color:var(--sub);font-size:14px">안내 메일이나 카톡으로 링크를 보낼 때 제목·설명·이미지가 뜨지 않아요.</span></span></li>
+  <li><span class="num">5</span><span class="tag t-miss">없음</span><span><b>오류 기록</b><br><span style="color:var(--sub);font-size:14px">참가자 화면에서 오류가 나도 관리자가 알 방법이 없어요.</span></span></li>
+</ol></div>
+
+<h2>Details<em>항목별 진단</em></h2>
+
+<details id="c1" open><summary>1. 보안<span class="s"><span class="tag t-warn">보완 3</span><span class="tag t-ok">정상 5</span></span></summary>
+  <div class="f na" style="padding-top:12px"><p style="margin:0;color:var(--sub)">다른 사람이 데이터를 엿보거나 바꾸지 못하게 막는 장치들이에요.</p></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>초기 설정 화면 보호 <span class="tech">bootstrap</span></div>
+    <p><b>이게 뭔가요</b>사이트를 처음 열면 나오는 '총괄 관리자 등록' 화면이에요. 관리자 열쇠를 처음 만드는 곳이에요.</p>
+    <p><b>왜 필요한가요</b>배포하고 등록하기 전 사이에 누군가 주소를 먼저 알고 들어오면, 그 사람이 총괄 관리자가 될 수 있어요.</p>
+    <p class="now"><b>지금 사이트는</b>총괄 관리자가 한 명도 없을 때만 열리고, 한 번 등록하면 다시 나타나지 않아요. 하지만 등록 전에는 누구나 쓸 수 있어요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“초기 설정 화면에 비밀 코드를 입력해야 등록되도록 바꿔줘”</div>
+    <div class="todo"><b>사람이 할 일</b> · 실제 모드로 배포한 직후 바로 총괄 관리자를 등록해 주세요.</div>
+    <div class="dev">개발자용 근거 · admin-users 함수 bootstrap 분기는 super_admin 수만 확인 (토큰 없음)</div></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>아무나 계정을 만들 수 없게 막기 <span class="tech">Auth sign-up 설정</span></div>
+    <p><b>이게 뭔가요</b>Supabase 로그인 장치에는 '누구나 스스로 가입' 기능이 기본으로 켜져 있어요.</p>
+    <p><b>왜 필요한가요</b>켜 두면 외부인이 빈 계정을 만들 수 있어요. 지금 구조에서는 그 계정으로 회사·도서 목록 정도만 보이지만, 처음부터 막는 게 안전해요.</p>
+    <p class="now"><b>지금 사이트는</b>화면에는 가입 버튼이 없고 계정은 관리자만 만들어요. 하지만 Supabase 쪽 설정은 사람이 꺼야 해요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“Supabase에서 공개 가입 끄는 방법을 단계별로 알려줘”</div>
+    <div class="todo"><b>사람이 할 일</b> · Supabase → Authentication → Sign In / Providers → 'Allow new users to sign up' 끄기</div>
+    <div class="dev">개발자용 근거 · 계정 생성은 admin.createUser(service role)만 사용, anon signUp 경로는 프로젝트 설정에 의존</div></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>입력 내용 서버 검사 <span class="tech">server-side validation</span></div>
+    <p><b>이게 뭔가요</b>'요약 250~400자, 인용 3개' 같은 규칙을 화면뿐 아니라 저장하는 쪽에서도 다시 검사하는 장치예요.</p>
+    <p><b>왜 필요한가요</b>화면 검사는 개발 도구로 건너뛸 수 있어요. 빈 양식이 '제출'로 저장되면 수료 판정이 틀어져요.</p>
+    <p class="now"><b>지금 사이트는</b>본인 확인, 마감·잠금, 지연 판정은 DB가 직접 검사해요. 글자 수와 인용 개수는 화면에서만 검사해요. 안내 메일에 들어가는 이름·문구도 특수문자 처리 없이 그대로 들어가요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“제출할 때 글자 수와 인용 3개 규칙을 DB에서도 검사하고, 메일 본문의 특수문자를 안전하게 바꿔줘”</div>
+    <div class="dev">개발자용 근거 · submissions_guard 트리거에 content 검증 없음, notify/index.ts layout()에 HTML 이스케이프 없음</div></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>비밀값 노출 <span class="tech">API key</span></div>
+    <p><b>이게 뭔가요</b>DB 관리자 열쇠 같은 비밀값이 방문자 브라우저로 내려가지 않는지 보는 항목이에요.</p>
+    <p class="now"><b>지금 사이트는</b>화면 코드에는 공개해도 되는 주소와 공개 키만 있어요. 관리자 열쇠는 서버 함수 안에만 있어요. 코드 전체에서 비밀값 형태의 문자열은 발견되지 않았어요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>환경 설정 파일 관리 <span class="tech">.env / .gitignore</span></div>
+    <p><b>이게 뭔가요</b>비밀값을 적는 설정 파일이 GitHub에 올라가지 않게 막는 목록이에요.</p>
+    <p class="now"><b>지금 사이트는</b>실제 키를 넣는 설정 파일은 업로드 제외 목록에 들어 있어요. 아직 GitHub에 올린 적이 없어 기록에 남은 것도 없어요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>데이터 접근 권한 <span class="tech">RLS</span></div>
+    <p><b>이게 뭔가요</b>DB 표마다 '누가 어떤 줄을 볼 수 있는지' 정해 두는 잠금장치예요.</p>
+    <p class="now"><b>지금 사이트는</b>14개 표 모두 잠금이 켜져 있어요. 각 사 관리자는 자기 계열사만, 참가자는 본인 것과 같은 그룹 발표자료만 볼 수 있어요. 시험 DB에서 다른 계열사 조회, 권한 올리기, 남의 제출물 작성이 모두 막히는 것을 확인했어요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>서버 전용 코드 분리 <span class="tech">Edge Functions</span></div>
+    <p><b>이게 뭔가요</b>계정 만들기·비밀번호 초기화처럼 관리자 열쇠가 필요한 일을 화면이 아닌 서버에서만 하는지 보는 항목이에요.</p>
+    <p class="now"><b>지금 사이트는</b>이런 일은 모두 서버 함수가 처리하고, 화면은 요청만 보내요. 비밀번호 정책과 로그인 5회 잠금도 서버에서 검사해요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>보안 연결 <span class="tech">HTTPS</span></div>
+    <p><b>이게 뭔가요</b>주소창 자물쇠 표시예요. 주고받는 내용이 암호화돼요.</p>
+    <p class="now"><b>지금 사이트는</b>GitHub Pages와 Supabase 모두 기본으로 HTTPS를 써요. 세부 보안 헤더는 GitHub Pages에서 바꿀 수 없지만, 사내 도구로는 충분한 수준이에요.</p>
+    <div class="todo"><b>사람이 할 일</b> · 저장소 Settings → Pages에서 'Enforce HTTPS'가 켜져 있는지 확인</div></div>
+</details>
+
+<details id="c2" open><summary>2. SEO<span class="s"><span class="tag t-miss">없음 3</span><span class="tag t-warn">보완 1</span><span class="tag t-ok">정상 1</span></span></summary>
+  <div class="f na" style="padding-top:12px"><p style="margin:0;color:var(--sub)">검색과 링크 공유에서 사이트가 어떻게 보이는지에 관한 항목이에요. 이 사이트는 사내 전용이라 '검색에 안 뜨게 하기'와 '공유할 때 깔끔하게 보이기'가 목표예요.</p></div>
+  <div class="f miss"><div class="h"><span class="tag t-miss">없음</span>검색 노출 차단 <span class="tech">robots.txt · noindex</span></div>
+    <p><b>이게 뭔가요</b>검색 로봇에게 '이 사이트는 수집하지 마세요'라고 알려 주는 표지판이에요.</p>
+    <p><b>왜 필요한가요</b>없으면 구글·네이버가 로그인 화면을 수집해 '상상인그룹 리더십 교육' 검색에 노출될 수 있어요. 데이터는 잠겨 있지만 사내 시스템 주소가 퍼지는 건 피하는 게 좋아요.</p>
+    <p class="now"><b>지금 사이트는</b>검색 로봇을 막는 파일과 설정이 둘 다 없어요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“검색엔진이 이 사이트를 수집하지 않도록 robots.txt와 noindex를 넣어줘”</div>
+    <div class="dev">개발자용 근거 · public/robots.txt 없음, index.html에 meta robots 없음</div></div>
+  <div class="f miss"><div class="h"><span class="tag t-miss">없음</span>링크 공유 미리보기 <span class="tech">OG 태그</span></div>
+    <p><b>이게 뭔가요</b>카톡·메일에 링크를 붙였을 때 뜨는 제목·설명·대표 이미지 카드예요.</p>
+    <p><b>왜 필요한가요</b>85명 대표·본부장·팀장에게 계정 안내를 보낼 때 미리보기가 없으면 낯선 주소처럼 보여 클릭을 망설이게 돼요.</p>
+    <p class="now"><b>지금 사이트는</b>제목만 있고 설명·대표 이미지가 없어서 링크가 주소만 덩그러니 보여요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“링크 공유 미리보기용 설명과 1200×630 대표 이미지를 만들어 넣어줘”</div>
+    <div class="dev">개발자용 근거 · index.html에 og:title / og:description / og:image 없음</div></div>
+  <div class="f miss"><div class="h"><span class="tag t-miss">없음</span>파비콘·홈 화면 아이콘 <span class="tech">favicon · apple-touch-icon</span></div>
+    <p><b>이게 뭔가요</b>브라우저 탭과 휴대폰 홈 화면에 보이는 작은 아이콘이에요.</p>
+    <p><b>왜 필요한가요</b>참가자가 휴대폰 홈 화면에 추가해 매달 쓰기 좋아요. 없으면 빈 아이콘이나 글자로 보여요.</p>
+    <p class="now"><b>지금 사이트는</b>아이콘 파일이 없어요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“상상인 Teal 색으로 파비콘과 홈 화면 아이콘을 만들어 넣어줘”</div>
+    <div class="dev">개발자용 근거 · public/ 폴더 없음, link rel="icon" 없음</div></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>페이지 제목과 설명 <span class="tech">title · meta description</span></div>
+    <p><b>이게 뭔가요</b>브라우저 탭 제목과 사이트 한 줄 소개예요.</p>
+    <p><b>왜 필요한가요</b>탭이 여러 개 열려 있을 때 찾기 쉽고, 공유 미리보기 설명으로도 쓰여요.</p>
+    <p class="now"><b>지금 사이트는</b>'리더십 2년차 독서교육' 제목은 있지만 모든 화면이 같은 제목이고 설명은 없어요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“사이트 설명을 넣고 화면마다 탭 제목이 바뀌게 해줘”</div>
+    <div class="dev">개발자용 근거 · index.html title 고정, meta description 없음</div></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>제목 구조와 대체 텍스트 <span class="tech">h1 · alt</span></div>
+    <p><b>이게 뭔가요</b>화면마다 큰 제목이 하나씩 있는지, 이미지에 설명 글이 있는지 보는 항목이에요.</p>
+    <p class="now"><b>지금 사이트는</b>화면마다 큰 제목이 하나씩 있고, 도서 표지 이미지에는 책 제목이 설명으로 들어가요.</p></div>
+  <div class="f na"><div class="h"><span class="tag t-na">해당 없음</span>사이트맵·검색 등록 <span class="tech">sitemap.xml · 서치콘솔</span></div>
+    <p class="now"><b>지금 사이트는</b>사내 전용이라 검색 등록을 하지 않는 게 맞아요.</p></div>
+</details>
+
+<details id="c3" open><summary>3. 푸터 필수 요소<span class="s"><span class="tag t-miss">없음 1</span><span class="tag t-warn">보완 1</span></span></summary>
+  <div class="f na" style="padding-top:12px"><p style="margin:0;color:var(--sub)">사이트 맨 아래에 있어야 하는 법적·안내 정보예요. 판매가 없는 사내 도구라 개인정보 안내와 문의처만 해당돼요.</p></div>
+  <div class="f miss"><div class="h"><span class="tag t-miss">없음</span>개인정보 수집·이용 안내 <span class="tech">개인정보처리방침</span></div>
+    <p><b>이게 뭔가요</b>어떤 개인정보를, 왜, 얼마 동안 보관하고 언제 지우는지 알려 주는 문서예요.</p>
+    <p><b>왜 필요한가요</b>사내 교육이어도 개인정보를 모으면 알려야 해요. 특히 작성 내용이 그룹·관리자에게 공개되는 범위를 미리 알려야 나중에 불만이 생기지 않아요.</p>
+    <p class="now"><b>지금 사이트는</b>이름·사번·소속·직급·회사 메일과 독서 기록을 모으는데, 안내문과 확인 절차가 없어요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“개인정보 수집·이용 안내문 초안을 만들어 푸터에 연결하고, 첫 로그인 때 확인받게 해줘”</div>
+    <div class="todo"><b>사람이 할 일</b> · 초안의 [ ] 빈칸(보관 기간, 책임자, 문의처)을 채우고 인사·법무 검토 받기</div>
+    <div class="dev">개발자용 근거 · 푸터에 링크 없음, profiles에 동의 일시 컬럼 없음</div></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>문의처와 저작권 표기 <span class="tech">contact · ©</span></div>
+    <p><b>이게 뭔가요</b>문제가 생겼을 때 연락할 곳과 '© 연도 이름' 표시예요.</p>
+    <p><b>왜 필요한가요</b>로그인이 안 되거나 제출이 막혔을 때 참가자가 바로 연락할 곳을 찾을 수 있어요.</p>
+    <p class="now"><b>지금 사이트는</b>푸터에 '상상인그룹 인재경영실'만 있고 메일·내선 번호와 © 표시가 없어요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“푸터에 문의처와 © 2027 상상인그룹을 넣어줘. 문의처는 [메일/내선]이야”</div>
+    <div class="todo"><b>사람이 할 일</b> · 공개할 문의 메일·내선 번호 정하기</div>
+    <div class="dev">개발자용 근거 · components/Layout.tsx footer</div></div>
+  <div class="f na"><div class="h"><span class="tag t-na">해당 없음</span>이용약관 · 사업자 정보 · 마케팅 수신 동의 · 쿠키 배너</div>
+    <p class="now"><b>지금 사이트는</b>판매가 없는 사내 도구이고, 업무 안내 메일만 보내며, 해외 이용자가 없어서 필요 없어요.</p></div>
+</details>
+
+<details id="c4" open><summary>4. 화면 대응<span class="s"><span class="tag t-warn">보완 2</span><span class="tag t-ok">정상 3</span></span></summary>
+  <div class="f na" style="padding-top:12px"><p style="margin:0;color:var(--sub)">휴대폰·태블릿·넓은 모니터 어디서나 잘 보이는지 보는 항목이에요. 9개 크기 × 15개 화면을 실제 브라우저로 확인했어요.</p></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>휴대폰 입력칸 자동 확대 <span class="tech">input font-size 16px</span></div>
+    <p><b>이게 뭔가요</b>아이폰은 글자가 16px보다 작은 입력칸을 누르면 화면을 저절로 확대해요.</p>
+    <p><b>왜 필요한가요</b>참가자 대부분이 휴대폰으로 300자 요약을 쓸 텐데, 누를 때마다 화면이 커졌다 줄었다 하면 불편해요.</p>
+    <p class="now"><b>지금 사이트는</b>입력칸 글자가 15px이라 아이폰에서 확대가 일어나요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“휴대폰에서 입력칸 글자를 16px로 키워 자동 확대를 막아줘”</div>
+    <div class="dev">개발자용 근거 · styles.css input/select/textarea font-size:15px</div></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>관리자 화면의 휴대폰 사용성 <span class="tech">touch target</span></div>
+    <p><b>이게 뭔가요</b>버튼이 손가락으로 누를 만큼 큰지(약 44px) 보는 항목이에요.</p>
+    <p><b>왜 필요한가요</b>작은 버튼은 옆 버튼을 잘못 누르기 쉬워요. 특히 '비활성'·'비번 초기화'를 잘못 누르면 곤란해요.</p>
+    <p class="now"><b>지금 사이트는</b>참가자 화면은 모두 충분히 커요. 관리자 표 안의 수정·초기화 버튼과 제출 현황 칸(28px)은 휴대폰에서 작아요. 화면 제목 옆 버튼 때문에 제목이 두 줄로 좁아지기도 해요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“휴대폰에서 관리자 표 버튼을 키우고, 제목 옆 버튼은 제목 아래로 내려줘”</div>
+    <div class="dev">개발자용 근거 · .btn.xs(28px)·.mx .cell, 360~430px에서 members 42개·submissions 132개 감지</div></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>화면 크기별 넘침·잘림</div>
+    <p><b>이게 뭔가요</b>화면이 옆으로 밀리거나 글자·버튼이 잘리는지 보는 항목이에요.</p>
+    <p class="now"><b>지금 사이트는</b>360×640부터 2560×1080까지 9개 크기에서 가로로 밀리거나 잘리는 곳이 없었어요. 넓은 표는 표 안에서만 옆으로 넘겨져요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>휴대폰 화면 설정 <span class="tech">viewport</span></div>
+    <p><b>이게 뭔가요</b>휴대폰이 사이트를 PC 화면처럼 작게 줄이지 않도록 하는 설정이에요.</p>
+    <p class="now"><b>지금 사이트는</b>들어 있어요. 아이폰 노치 영역도 고려되어 있어요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>마우스 없이 쓰기 <span class="tech">hover 의존 없음</span></div>
+    <p><b>이게 뭔가요</b>마우스를 올려야만 열리는 메뉴가 있는지 보는 항목이에요.</p>
+    <p class="now"><b>지금 사이트는</b>그런 메뉴가 없어요. 휴대폰에서는 하단 탭(홈·이번 회차·내 서재·내 정보)으로 이동해요.</p></div>
+</details>
+
+<details id="c5" open><summary>5. 운영 기본<span class="s"><span class="tag t-miss">없음 1</span><span class="tag t-warn">보완 2</span><span class="tag t-ok">정상 2</span></span></summary>
+  <div class="f na" style="padding-top:12px"><p style="margin:0;color:var(--sub)">문제가 생겼을 때 사용자가 길을 잃지 않게 하는 기본 장치예요.</p></div>
+  <div class="f miss"><div class="h"><span class="tag t-miss">없음</span>오류가 났을 때의 안내 화면 <span class="tech">Error Boundary</span></div>
+    <p><b>이게 뭔가요</b>예상 못 한 오류가 나도 '문제가 생겼어요, 새로고침해 주세요' 같은 안내를 보여 주는 안전망이에요.</p>
+    <p><b>왜 필요한가요</b>없으면 화면 전체가 하얗게 비어 버려요. 참가자는 사이트가 고장 났다고 생각하고 제출을 미뤄요.</p>
+    <p class="now"><b>지금 사이트는</b>안전망이 없어요. 어제 데모 페이지가 빈 화면으로 보였던 것도 같은 유형이에요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“오류가 나면 빈 화면 대신 안내 화면과 새로고침 버튼이 나오게 해줘”</div>
+    <div class="dev">개발자용 근거 · App.tsx에 ErrorBoundary(componentDidCatch) 없음</div></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>없는 주소 처리 <span class="tech">404</span></div>
+    <p><b>이게 뭔가요</b>잘못된 주소로 들어왔을 때 보여 주는 화면이에요.</p>
+    <p><b>왜 필요한가요</b>메일 링크를 잘못 복사했을 때 GitHub 기본 오류 화면이 나오면 사내 시스템인지 알아보기 어려워요.</p>
+    <p class="now"><b>지금 사이트는</b>사이트 안의 없는 화면은 홈으로 돌려보내요. 주소 자체가 틀리면 GitHub 기본 404 화면이 나와요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“잘못된 주소로 들어오면 로그인 화면으로 보내는 404 페이지를 만들어줘”</div>
+    <div class="dev">개발자용 근거 · public/404.html 없음 (HashRouter 사용 중)</div></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>첫 화면 로딩 무게 <span class="tech">bundle size</span></div>
+    <p><b>이게 뭔가요</b>사이트를 열 때 내려받는 프로그램 크기예요.</p>
+    <p><b>왜 필요한가요</b>무거우면 휴대폰 데이터 환경에서 첫 화면이 늦게 떠요.</p>
+    <p class="now"><b>지금 사이트는</b>약 250KB(압축 기준)라 쓸 만한 수준이에요. 다만 관리자만 쓰는 엑셀 기능까지 참가자에게도 함께 내려가요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“엑셀 기능은 관리자가 버튼을 누를 때만 불러오게 바꿔줘”</div>
+    <div class="dev">개발자용 근거 · index-*.js 744KB (gzip 248KB), xlsx 정적 import</div></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>로딩 표시와 두 번 눌림 방지</div>
+    <p><b>이게 뭔가요</b>처리 중일 때 '불러오는 중…'을 보여 주고, 같은 버튼이 두 번 눌리지 않게 막는 장치예요.</p>
+    <p class="now"><b>지금 사이트는</b>제출·저장·발송 버튼은 처리 중에 잠기고, 화면마다 로딩 표시가 있어요. 작성 내용은 30초마다 자동 저장되고 기기에도 사본이 남아요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>깨진 링크와 빈 화면</div>
+    <p><b>이게 뭔가요</b>눌러도 아무 데도 안 가는 링크나 내용 없는 화면이 있는지 보는 항목이에요.</p>
+    <p class="now"><b>지금 사이트는</b>15개 화면을 모두 열어 봤고 오류가 없었어요. 데이터가 없을 때는 '그룹이 배정되지 않았습니다'처럼 안내 문구가 나와요.</p></div>
+</details>
+
+<details id="c6"><summary>6. 데이터<span class="s"><span class="tag t-warn">보완 1</span><span class="tag t-ok">정상 3</span></span></summary>
+  <div class="f na" style="padding-top:12px"><p style="margin:0;color:var(--sub)">모은 데이터를 어디에 두고, 잃어버리지 않게 어떻게 지키는지에 관한 항목이에요.</p></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>보관 기간과 파기 절차</div>
+    <p><b>이게 뭔가요</b>교육이 끝난 뒤 기록을 언제까지 두고 언제 지울지 정하는 규칙이에요.</p>
+    <p><b>왜 필요한가요</b>개인정보 안내문에 꼭 들어가야 하고, 정하지 않으면 데이터가 계속 쌓여요.</p>
+    <p class="now"><b>지금 사이트는</b>사양서 미결 사항으로 남아 있어요. 기간이 정해지면 일괄 삭제 기능을 붙일 수 있어요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“보관 기간은 [ ]년이야. 기간이 지난 연도 데이터를 지우는 관리자 기능을 만들어줘”</div>
+    <div class="todo"><b>사람이 할 일</b> · 보관 기간 결정 (예: 운영 종료 후 [ ]년)</div></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>데이터가 쌓이는 곳과 확인 방법</div>
+    <p><b>이게 뭔가요</b>제출물이 어디에 저장되고 누가 어디서 보는지 정리되어 있는지 보는 항목이에요.</p>
+    <p class="now"><b>지금 사이트는</b>모두 Supabase에 쌓이고, 각 사 관리자 제출 현황·총괄 대시보드·엑셀 내보내기로 확인해요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>백업 <span class="tech">daily backup</span></div>
+    <p><b>이게 뭔가요</b>실수로 지워도 되살릴 수 있게 매일 사본을 남기는 기능이에요.</p>
+    <p class="now"><b>지금 사이트는</b>Supabase Pro 요금제에 매일 자동 백업이 포함돼요. 중요한 시점에는 분기 보고 엑셀로도 사본을 남길 수 있어요.</p>
+    <div class="todo"><b>사람이 할 일</b> · 프로젝트 생성 후 Database → Backups에서 백업이 쌓이는지 한 번 확인</div></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>테스트 데이터 분리</div>
+    <p><b>이게 뭔가요</b>연습용 데이터가 실제 데이터에 섞이지 않는지 보는 항목이에요.</p>
+    <p class="now"><b>지금 사이트는</b>예시 85명은 데모 모드에서 브라우저 안에만 있어요. 실제 DB에는 도서 12권과 운영 설정만 들어가요.</p></div>
+</details>
+
+<details id="c7" open><summary>7. 기록 시스템<span class="s"><span class="tag t-miss">없음 1</span><span class="tag t-warn">보완 1</span><span class="tag t-ok">정상 3</span></span></summary>
+  <div class="f na" style="padding-top:12px"><p style="margin:0;color:var(--sub)">누가 얼마나 쓰는지, 무엇이 잘못됐는지 숫자와 기록으로 남기는 장치예요.</p></div>
+  <div class="f miss"><div class="h"><span class="tag t-miss">없음</span>오류 기록 <span class="tech">error logging</span></div>
+    <p><b>이게 뭔가요</b>참가자 화면에서 오류가 나면 자동으로 기록해 두는 장치예요.</p>
+    <p><b>왜 필요한가요</b>"제출이 안 돼요" 문의가 왔을 때 무슨 일이 있었는지 확인할 수 있어요.</p>
+    <p class="now"><b>지금 사이트는</b>서버 함수 기록은 Supabase에 남지만, 화면 오류는 어디에도 남지 않아요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“화면에서 오류가 나면 DB에 기록하고 감사 로그 옆에서 볼 수 있게 해줘”</div>
+    <div class="dev">개발자용 근거 · window.onerror / ErrorBoundary 로깅 없음, Sentry 미사용</div></div>
+  <div class="f warn"><div class="h"><span class="tag t-warn">보완</span>접속 기록 <span class="tech">last sign-in</span></div>
+    <p><b>이게 뭔가요</b>누가 언제 마지막으로 들어왔는지 보여 주는 기록이에요.</p>
+    <p><b>왜 필요한가요</b>'계정 안내 후 한 번도 로그인 안 한 사람'을 골라 독려할 수 있어요. 외부 분석 도구 없이도 오너 보고에 쓸 수 있어요.</p>
+    <p class="now"><b>지금 사이트는</b>로그인 시각은 Supabase에 남지만 관리자 화면에서는 보이지 않아요. '비번 변경 전' 표시로 미접속자만 간접적으로 알 수 있어요.</p>
+    <div class="say"><small>고치려면 이렇게 말씀하세요</small>“대상자 목록에 최근 접속일을 보여주고, 미접속자만 골라 볼 수 있게 해줘”</div>
+    <div class="dev">개발자용 근거 · auth.users.last_sign_in_at 미노출</div></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>행동 기록</div>
+    <p><b>이게 뭔가요</b>제출·임시저장·기한 연장·메일 발송처럼 중요한 행동을 남기는 기록이에요.</p>
+    <p class="now"><b>지금 사이트는</b>제출 시각·지연 여부가 저장되고, 관리자 작업은 감사 로그, 메일은 발송 기록에 남아요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>날짜 함께 저장</div>
+    <p><b>이게 뭔가요</b>데이터마다 언제 생겼는지 기록되는지 보는 항목이에요.</p>
+    <p class="now"><b>지금 사이트는</b>제출물·출석·연장·로그 모두 날짜와 시각이 함께 저장돼요.</p></div>
+  <div class="f ok"><div class="h"><span class="tag t-ok">정상</span>한눈에 보는 화면 <span class="tech">dashboard</span></div>
+    <p><b>이게 뭔가요</b>위 숫자를 모아 보는 관리자 화면이에요.</p>
+    <p class="now"><b>지금 사이트는</b>각 사 대시보드와 그룹 대시보드(계열사 비교·월별 추이·계열사 × 월 표), 분기 보고가 있어요.</p></div>
+</details>
+
+<h2>Action<em>사람이 직접 할 일</em></h2>
+<div class="box"><ul>
+  <li><span class="ck"></span>Supabase → Authentication에서 'Allow new users to sign up' 끄기</li>
+  <li><span class="ck"></span>실제 모드로 배포한 직후 바로 총괄 관리자 등록하기</li>
+  <li><span class="ck"></span>GitHub 저장소 Settings → Pages에서 'Enforce HTTPS' 확인</li>
+  <li><span class="ck"></span>공개할 문의처(메일·내선) 정하기</li>
+  <li><span class="ck"></span>데이터 보관 기간 정하기 → 개인정보 안내문 빈칸 채우기 → 인사·법무 검토</li>
+  <li><span class="ck"></span>Supabase 프로젝트 생성 후 Database → Backups에서 자동 백업 확인</li>
+</ul></div>
+
+<h2>Glossary<em>자주 나오는 말</em></h2>
+<div class="glossary">
+  <div><b>RLS</b>DB 표의 줄마다 '누가 볼 수 있는지' 정해 두는 잠금장치예요.</div>
+  <div><b>OG 태그</b>링크를 공유할 때 뜨는 제목·설명·이미지 카드를 정하는 설정이에요.</div>
+  <div><b>robots.txt · noindex</b>검색 로봇에게 '수집하지 마세요'라고 알리는 표지판이에요.</div>
+  <div><b>파비콘</b>브라우저 탭과 휴대폰 홈 화면에 보이는 작은 아이콘이에요.</div>
+  <div><b>서버 함수</b>관리자 열쇠가 필요한 일(계정 만들기, 메일 보내기)을 화면 대신 처리하는 작은 프로그램이에요.</div>
+  <div><b>Error Boundary</b>화면 일부에서 오류가 나도 전체가 하얗게 꺼지지 않게 받아 주는 안전망이에요.</div>
+</div>
+
+<h2>Next<em>고치고 싶다면 이렇게 말씀하세요</em></h2>
+<div class="cmd">
+  <div><b>“다 고쳐줘”</b>위험·없음·보완 전부를 묶음 순서대로 고치고 빌드로 확인합니다</div>
+  <div><b>“위험한 것만 고쳐줘”</b>위험 항목만 고칩니다</div>
+  <div><b>“1, 3번 고쳐줘”</b>'먼저 고칠 것' 번호로 골라서 고칩니다</div>
+  <div><b>“SEO 묶음만 고쳐줘”</b>묶음 단위로 고칩니다</div>
+  <div><b>항목별로</b>각 항목 아래 주황 점선 상자의 문장을 그대로 쓰면 됩니다</div>
+  <div><b>“다시 점검해줘”</b>고친 뒤 재점검해 이 보고서 아래에 전후를 붙입니다</div>
+</div>
+
+<h2>Re-check<em>재점검 (2026-10-20)</em></h2>
+<div class="scope"><b>판정 변화</b> · 🟡 조건부 가능 → <b style="color:var(--ok)">🟢 출시 가능</b> · 통과율 50% → 91% (31 / 34 항목)<br>
+<b>빌드</b> · <code>npm run build</code> 통과 (타입 검사 포함). 첫 화면 내려받기 248KB → 112KB(압축 기준)<br>
+<b>확인 방법</b> · 시험 DB에서 권한·검증 시험 26개 항목 재실행, 데모 빌드로 로그인·제출·비밀번호 변경·개인정보 확인·기한 연장·엑셀 흐름 재실행(오류 0건), 9개 화면 크기 × 16개 화면 재확인(넘침·잘림·작은 버튼 0건). 실제 주소 점검은 배포 후 다시 해야 해요.<br>
+<b>함께 반영</b> · 최종본(2026.10.13) 기준 도서 비고(추천) 바로잡음 — 1~3·8~9번 그룹 CEO 강조도서, 11~12번 엠아이텍 대표 추천, 5~7번 비고 없음. 7·11번 핵심 내용 원문으로 보완, 분야 표기 '경제·경영', 참가자용 '교육 안내' 화면 추가.</div>
+<div class="box" style="margin-top:12px"><div style="overflow-x:auto"><table style="width:100%;border-collapse:collapse;font-size:14px">
+  <thead><tr style="text-align:left;color:var(--sub);font-size:12px"><th style="padding:10px 6px">묶음</th><th style="padding:10px 6px">전 (🚨/❌/⚠️)</th><th style="padding:10px 6px">후 (🚨/❌/⚠️)</th><th style="padding:10px 6px">바뀐 점</th></tr></thead>
+  <tbody>
+    <tr style="border-top:1px solid var(--line)"><td style="padding:10px 6px"><b>1. 보안</b></td><td>0 / 0 / 3</td><td>0 / 0 / 1</td><td style="font-size:13px">초기 설정에 설치 코드 필요, 제출 내용 DB 검사, 메일 특수문자 처리, 프로필 없는 계정은 아무것도 못 봄. 남은 ⚠️: Supabase 공개 가입 끄기(사람이 할 일)</td></tr>
+    <tr style="border-top:1px solid var(--line)"><td style="padding:10px 6px"><b>2. SEO</b></td><td>0 / 3 / 1</td><td>0 / 0 / 0</td><td style="font-size:13px">검색 노출 차단(noindex), 링크 미리보기 이미지, 파비콘·홈 화면 아이콘, 사이트 설명·화면별 탭 제목</td></tr>
+    <tr style="border-top:1px solid var(--line)"><td style="padding:10px 6px"><b>3. 푸터 필수 요소</b></td><td>0 / 1 / 1</td><td>0 / 0 / 1</td><td style="font-size:13px">개인정보 수집·이용 안내 초안 + 첫 로그인 확인, 푸터 문의처·©·안내 링크. 남은 ⚠️: 안내문 빈칸 채우고 인사·법무 검토</td></tr>
+    <tr style="border-top:1px solid var(--line)"><td style="padding:10px 6px"><b>4. 화면 대응</b></td><td>0 / 0 / 2</td><td>0 / 0 / 0</td><td style="font-size:13px">휴대폰 입력칸 16px(자동 확대 없음), 관리자 버튼 40px 이상, 제목 옆 버튼 아래로</td></tr>
+    <tr style="border-top:1px solid var(--line)"><td style="padding:10px 6px"><b>5. 운영 기본</b></td><td>0 / 1 / 2</td><td>0 / 0 / 0</td><td style="font-size:13px">오류 안내 화면, 잘못된 주소용 404 페이지, 엑셀 기능 필요할 때만 불러오기</td></tr>
+    <tr style="border-top:1px solid var(--line)"><td style="padding:10px 6px"><b>6. 데이터</b></td><td>0 / 0 / 1</td><td>0 / 0 / 1</td><td style="font-size:13px">보관 기간 설정 칸과 연도별 일괄 파기 기능 추가. 남은 ⚠️: 보관 기간 결정(사람이 할 일)</td></tr>
+    <tr style="border-top:1px solid var(--line)"><td style="padding:10px 6px"><b>7. 기록 시스템</b></td><td>0 / 1 / 1</td><td>0 / 0 / 0</td><td style="font-size:13px">화면 오류 자동 기록(설정 → 오류 기록), 대상자 목록에 최근 접속일·미접속자 필터</td></tr>
+  </tbody>
+</table></div></div>
+
+<footer>
+  <span>Launch Check 스킬로 자동 생성된 보고서입니다. 법적 문서 관련 항목은 참고용이며 최종 확인은 직접 해 주세요.</span>
+  <span>Made by 일잘러 도대리 · <a href="https://dodaeri.vercel.app">dodaeri.vercel.app</a></span>
+</footer>
+</main></body></html>
