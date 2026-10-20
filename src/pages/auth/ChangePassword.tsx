@@ -1,13 +1,13 @@
 import { FormEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useAuth } from "../../state/auth";
-import { callFn, errMsg } from "../../lib/supabase";
-import { validateNewPassword } from "../../lib/account";
+import { callFn, db, errMsg } from "../../lib/supabase";
+import { authEmail, authPassword, validateNewPassword } from "../../lib/account";
 import { DemoBar } from "../../components/Layout";
 import { useToast } from "../../components/ui";
 
 export function PasswordForm({ onDone, forced }: { onDone: () => void; forced?: boolean }) {
-  const { me } = useAuth();
+  const { me, company } = useAuth();
   const toast = useToast();
   const [cur, setCur] = useState("");
   const [next, setNext] = useState("");
@@ -27,7 +27,15 @@ export function PasswordForm({ onDone, forced }: { onDone: () => void; forced?: 
     if (policy) return setErr(policy);
     if (next !== again) return setErr("새 비밀번호 확인이 일치하지 않습니다.");
     setBusy(true);
-    try { await callFn("change-password", { current: cur, next }); toast("비밀번호를 변경했습니다."); onDone(); }
+    try {
+      await callFn("change-password", { current: cur, next });
+      // 비밀번호가 바뀌면 서버가 기존 로그인 세션을 끊으므로, 새 비밀번호로 바로 다시 로그인
+      if (company && me) {
+        const r = await db.auth.signInWithPassword({ email: authEmail(company.code, me.emp_no), password: authPassword(next) });
+        if (r.error) throw r.error;
+      }
+      toast("비밀번호를 변경했습니다."); onDone();
+    }
     catch (x: any) { setErr(errMsg(x)); } finally { setBusy(false); }
   };
   return (

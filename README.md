@@ -9,7 +9,21 @@
 
 ---
 
-## 1. 설치 순서 (최초 1회, 약 40분)
+## 0. 현재 운영 환경 (2026-10-20 설치 완료)
+
+| 항목 | 값 |
+|---|---|
+| 사이트 | https://goodwon89.github.io/leadership-reading/ |
+| GitHub 저장소 | https://github.com/goodwon89/leadership-reading (main 브랜치 push → 자동 배포) |
+| Supabase 프로젝트 | `ssi-leadership-reading` (서울 리전, ref `mfatwwldrfrsbyzwzkyv`) |
+| DB | 스키마·도서 12권 설치, 15개 표 RLS 적용, 공개 가입 차단 |
+| 서버 함수 | admin-users · change-password · notify 배포, 매일 09:00(KST) 알림 예약 |
+| 연결 설정 | `.env.production` (공개 키만 포함) |
+
+남은 일: 초기 설정 화면에서 총괄 관리자 등록(설치 코드 필요) → 메일 발송용 `RESEND_API_KEY` 등록 → 운영 설정(문의처·보관 기간) 입력.
+현재 조직이 Supabase **무료 플랜**이라 7일간 접속이 없으면 일시 중지됩니다. 정식 운영 전에 Pro로 올리세요.
+
+## 1. 설치 순서 (최초 1회, 약 40분) — 새 환경에 다시 설치할 때 참고
 
 ### 1-1. GitHub 저장소
 1. GitHub에서 새 저장소 `leadership-reading` 생성 (무료 계정은 **Public**이어야 Pages 사용 가능)

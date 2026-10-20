@@ -2,11 +2,9 @@
 # 필요한 Secrets: SUPABASE_ACCESS_TOKEN (supabase.com > Account > Access Tokens), SUPABASE_PROJECT_REF
 name: Deploy Supabase Functions
 
+# 서버 함수를 고친 뒤 Actions 탭에서 직접 실행합니다 (Secrets 등록 필요).
 on:
   workflow_dispatch:
-  push:
-    branches: [main]
-    paths: ["supabase/functions/**"]
 
 jobs:
   deploy:

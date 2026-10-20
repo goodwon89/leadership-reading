@@ -1,8 +1,5 @@
 # main 브랜치에 push 하면 자동으로 빌드해 GitHub Pages 에 배포합니다.
-# 저장소 Settings > Secrets and variables > Actions 에 아래 값을 등록하세요.
-#   VITE_SUPABASE_URL, VITE_SUPABASE_ANON_KEY, VITE_AUTH_EMAIL_DOMAIN
-# (선택) Variables 탭에 VITE_SITE_URL — 링크 미리보기 이미지 주소. 기본값 https://goodwon89.github.io/leadership-reading/
-# (값이 없으면 데모 모드로 배포됩니다.)
+# Supabase 연결 정보는 .env.production 에 있습니다. (서비스 키 같은 비밀값은 저장소에 두지 않습니다.)
 name: Deploy to GitHub Pages
 
 on:
@@ -29,12 +26,8 @@ jobs:
           node-version: 20
           cache: npm
       - run: npm ci
+      # 연결 정보는 저장소의 .env.production 에서 읽습니다 (공개 키만 포함)
       - run: npm run build
-        env:
-          VITE_SUPABASE_URL: ${{ secrets.VITE_SUPABASE_URL }}
-          VITE_SUPABASE_ANON_KEY: ${{ secrets.VITE_SUPABASE_ANON_KEY }}
-          VITE_AUTH_EMAIL_DOMAIN: ${{ secrets.VITE_AUTH_EMAIL_DOMAIN }}
-          VITE_SITE_URL: ${{ vars.VITE_SITE_URL }}
       - uses: actions/configure-pages@v5
       - uses: actions/upload-pages-artifact@v3
         with:
