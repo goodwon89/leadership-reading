@@ -4,3 +4,4 @@ dist-single
 .env
 .env.local
 dist-artifact
+supabase/.temp
