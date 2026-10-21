@@ -12,7 +12,8 @@ export function usePublicInfo() {
 
 /** 개인정보 수집·이용 안내 (초안 — [ ] 칸은 운영 설정에서 채움, 최종 문구는 인사·법무 검토) */
 export function PrivacyText({ info }: { info: Info | null }) {
-  const blank = (v?: string | null) => v || "[ ]";
+  // 운영 설정 값이 비어 있거나 초안([ ]) 상태면 기본 정책(퇴사 시점까지)을 표시
+  const retention = !info?.retention_text || info.retention_text.includes("[ ]") ? "퇴사 시점까지" : info.retention_text;
   return (
     <div className="stack" style={{ fontSize: 14.5 }}>
       <p>상상인그룹 인재경영실은 {info?.year ?? 2027}년 리더십 2년차 독서교육(Read to Lead) 운영을 위해 아래와 같이 개인정보를 수집·이용합니다.</p>
@@ -20,8 +21,8 @@ export function PrivacyText({ info }: { info: Info | null }) {
         <tr><th style={{ position: "static", width: 130 }}>수집 항목</th><td>소속 계열사, 사번, 성명, 직급 구분, 직책, 부서, 회사 메일 주소, 교육 중 작성한 내용(사전학습·발표자료·과제), 제출·출석 기록, 접속 일시</td></tr>
         <tr><th style={{ position: "static" }}>이용 목적</th><td>교육 대상자 확인과 로그인, 회차 운영(일정·그룹 편성), 제출 현황 관리와 수료 판정, 마감·미제출 안내 메일 발송, 분기별 교육 결과 보고</td></tr>
         <tr><th style={{ position: "static" }}>공개 범위</th><td>발표자료는 같은 토론 그룹 구성원에게 공개됩니다. 사전학습·과제와 개인 정보는 본인, 소속사 HR 담당자, 그룹 인재경영실만 볼 수 있습니다.</td></tr>
-        <tr><th style={{ position: "static" }}>보관 기간</th><td>{blank(info?.retention_text)} 보관 후 일괄 파기합니다.</td></tr>
-        <tr><th style={{ position: "static" }}>파기 방법</th><td>보관 기간이 지나면 해당 연도의 그룹·회차·제출물 데이터를 복구할 수 없도록 삭제합니다.</td></tr>
+        <tr><th style={{ position: "static" }}>보관 기간</th><td>{retention} 보관하며, 이후 지체 없이 파기합니다.</td></tr>
+        <tr><th style={{ position: "static" }}>파기 방법</th><td>보관 기간이 지나면 해당 개인의 계정과 교육 기록(제출물·출석 등)을 복구할 수 없도록 삭제합니다.</td></tr>
         <tr><th style={{ position: "static" }}>처리 위탁</th><td>데이터 보관: Supabase Inc.(서버 위치: 대한민국 서울 리전) · 안내 메일 발송: [메일 발송 업체]</td></tr>
         <tr><th style={{ position: "static" }}>담당·문의</th><td>{[info?.privacy_officer, info?.contact_email, info?.contact_phone].filter(Boolean).join(" · ") || "[ ]"}</td></tr>
       </tbody></table></div>

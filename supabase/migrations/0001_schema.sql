@@ -63,7 +63,7 @@ create table public.app_settings (
   contact_email text,                         -- 푸터·개인정보 안내에 표시할 문의처
   contact_phone text,
   privacy_officer text,                       -- 개인정보 보호 담당 (부서·성명)
-  retention_text text not null default '교육 종료 후 [ ]년',
+  retention_text text not null default '퇴사 시점까지',
   updated_at timestamptz not null default now()
 );
 

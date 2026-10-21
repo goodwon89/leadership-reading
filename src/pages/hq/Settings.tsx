@@ -73,7 +73,7 @@ function Ops({ settings, onSaved }: { settings: Settings; onSaved: () => void })
           <div className="field"><label>문의 메일</label><input type="email" value={f.contact_email ?? ""} onChange={(e) => setF({ ...f, contact_email: e.target.value })} /></div>
           <div className="field"><label>문의 전화·내선</label><input type="text" value={f.contact_phone ?? ""} onChange={(e) => setF({ ...f, contact_phone: e.target.value })} /></div>
           <div className="field"><label>개인정보 보호 담당 (부서·성명)</label><input type="text" value={f.privacy_officer ?? ""} onChange={(e) => setF({ ...f, privacy_officer: e.target.value })} /></div>
-          <div className="field"><label>보관 기간</label><input type="text" value={f.retention_text} onChange={(e) => setF({ ...f, retention_text: e.target.value })} placeholder="교육 종료 후 3년" /></div>
+          <div className="field"><label>보관 기간</label><input type="text" value={f.retention_text} onChange={(e) => setF({ ...f, retention_text: e.target.value })} placeholder="퇴사 시점까지" /></div>
         </div>
         <p className="tiny faint" style={{ marginTop: 6 }}>푸터와 '개인정보 수집·이용 안내'에 그대로 표시됩니다. 안내문 최종 문구는 인사·법무 검토 후 확정하세요.</p>
       </div>
