@@ -8,7 +8,7 @@ import { Empty, Loading, Modal, PageHead, useAsync, useToast } from "../../compo
 import { useOpenViewAs } from "../../components/ViewAs";
 
 type Tab = "ops" | "companies" | "books" | "audit" | "mail" | "errors" | "purge";
-const TABS: [Tab, string][] = [["ops", "운영 설정"], ["companies", "계열사·관리자"], ["books", "도서 마스터"], ["audit", "감사 로그"], ["mail", "메일 발송 기록"], ["errors", "오류 기록"], ["purge", "데이터 파기"]];
+const TABS: [Tab, string][] = [["ops", "운영 설정"], ["companies", "계열사·관리자"], ["books", "도서 마스터"], ["audit", "감사 로그"], ["errors", "오류 기록"], ["purge", "데이터 파기"]];
 
 export default function HqSettings() {
   const [tab, setTab] = useState<Tab>("ops");
@@ -77,7 +77,6 @@ function Ops({ settings, onSaved }: { settings: Settings; onSaved: () => void })
         </div>
         <p className="tiny faint" style={{ marginTop: 6 }}>푸터와 '개인정보 수집·이용 안내'에 그대로 표시됩니다. 안내문 최종 문구는 인사·법무 검토 후 확정하세요.</p>
       </div>
-      <label className="check"><input type="checkbox" checked={f.mail_enabled} onChange={(e) => setF({ ...f, mail_enabled: e.target.checked })} />자동 메일 알림 사용 (매일 09:00)</label>
       <div className="banner info">수료 기준: 본부장·팀장급은 12회 × 3양식 = 36건 모두 제출(지연 제출 포함). 대표급은 수료 판정에서 제외됩니다.</div>
       <div className="btns" style={{ justifyContent: "flex-end" }}><button className="btn" onClick={save}>저장</button></div>
     </section>

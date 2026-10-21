@@ -3,7 +3,7 @@
 상상인그룹 인재경영실 · 「'27년도 리더십 2년차 교육(안)」(2026.10.13) 운영용 웹앱 (PC·모바일 공용)
 
 - 화면: React + Vite + TypeScript, Pretendard, 디자인 토큰은 [Winning Basic!](https://goodwon89.github.io/winning-basic/)과 동일
-- 데이터·인증·메일: Supabase Pro (PostgreSQL + Auth + Edge Functions + pg_cron)
+- 데이터·인증: Supabase Pro (PostgreSQL + Auth + Edge Functions + pg_cron)
 - 배포: GitHub Pages (main 브랜치 push 시 자동 배포)
 - Supabase 값이 없으면 **데모 모드**로 동작 (브라우저 저장소 사용, 9개사 85명 예시 데이터)
 
@@ -20,7 +20,7 @@
 | 서버 함수 | admin-users · change-password · notify 배포, 매일 09:00(KST) 알림 예약 |
 | 연결 설정 | `.env.production` (공개 키만 포함) |
 
-남은 일: 초기 설정 화면에서 총괄 관리자 등록(설치 코드 필요) → 메일 발송용 `RESEND_API_KEY` 등록 → 운영 설정(문의처·보관 기간) 입력.
+남은 일: 초기 설정 화면에서 총괄 관리자 등록(설치 코드 필요) → 운영 설정(문의처·보관 기간) 입력.
 현재 조직이 Supabase **무료 플랜**이라 7일간 접속이 없으면 일시 중지됩니다. 정식 운영 전에 Pro로 올리세요.
 
 ## 1. 설치 순서 (최초 1회, 약 40분) — 새 환경에 다시 설치할 때 참고
@@ -46,7 +46,7 @@
 4. **Authentication → Sign In / Providers**에서 **Allow new users to sign up 끄기** (계정은 관리자만 만듭니다)
 5. **Database → Backups**에서 매일 자동 백업이 쌓이는지 확인 (Pro 요금제 포함)
 
-### 1-3. 서버 함수 배포 (계정 생성·비밀번호·메일)
+### 1-3. 서버 함수 배포 (계정 생성·비밀번호·퇴사 처리)
 GitHub 저장소 **Settings → Secrets and variables → Actions**에 등록:
 
 | 이름 | 값 |
@@ -64,14 +64,12 @@ Supabase **Edge Functions → Secrets(환경변수)**에 등록:
 | 이름 | 값 |
 |---|---|
 | `AUTH_EMAIL_DOMAIN` | `reading.sangsangin.local` |
-| `RESEND_API_KEY` | Resend 가입 후 발급 (도메인 인증 필요). 회사 SMTP를 쓰려면 notify 함수의 `send()`만 교체 |
 | `MAIL_FROM` | `인재경영실 <hr@회사도메인>` |
 | `CRON_SECRET` | 임의의 긴 문자열 (예: 32자 랜덤) |
 | `BOOTSTRAP_CODE` | 초기 설정 화면에서 입력할 설치 코드 (본인만 아는 문자열). 이 값을 아는 사람만 총괄 관리자를 만들 수 있습니다 |
 
-### 1-4. 매일 09:00 메일 알림
-1. **Database → Extensions**에서 `pg_cron`, `pg_net` 활성화
-2. `supabase/migrations/0002_cron.sql`의 `<PROJECT_REF>`, `<CRON_SECRET>`을 바꿔 SQL Editor에서 실행
+### 1-4. 메일 알림 (사용 안 함)
+외부 메일 발송 업체를 쓰지 않기로 해서 `notify` 함수는 아무것도 보내지 않습니다. 예전에 등록한 예약 작업이 있다면 SQL Editor에서 `select cron.unschedule(jobname) from cron.job where jobname like '%notify%';` 로 지워도 됩니다.
 
 ### 1-5. 실제 모드로 재배포
 **Actions → Deploy to GitHub Pages → Run workflow** (또는 아무 커밋 push).
@@ -82,7 +80,7 @@ Supabase **Edge Functions → Secrets(환경변수)**에 등록:
 1. **설정 → 운영 설정**: 플랫폼 주소(`https://goodwon89.github.io/leadership-reading/`), 최종 마감일, **문의처·개인정보 보호 담당·보관 기간** 입력 (푸터와 개인정보 안내에 표시. 안내문 최종 문구는 인사·법무 검토)
 2. **설정 → 계열사·관리자**: 9개 계열사 추가 (코드는 로그인에 쓰이므로 영문·숫자, 변경 불가)
 3. 각 사 HR 담당자를 **계열사별 관리 → 대상자**에서 등록(교육 대상자 체크 해제) → **설정 → 관리자 지정**
-4. 각 사 관리자: 대상자 엑셀 일괄 등록 → 토론 그룹 편성 → 연간 도서 편성 → 회차 일괄 생성 → 계정 안내 메일
+4. 각 사 관리자: 대상자 엑셀 일괄 등록 → 토론 그룹 편성 → 연간 도서 편성 → 회차 일괄 생성 → 계정 안내(명단·안내문 복사 후 사내 메일로 발송)
 
 ---
 
@@ -92,7 +90,7 @@ Supabase **Edge Functions → Secrets(환경변수)**에 등록:
 |---|---|
 | 사용자(참가자) | 홈 · 이번 회차(사전학습/발표자료/과제 작성, 그룹 발표자료) · 내 서재 · 내 정보 |
 | 각 사 관리자 | 대시보드 · 대상자 · 토론 그룹 · 도서 편성 · 회차·출석 · 제출 현황(기한 연장) · 내보내기 |
-| 총괄 관리자 | 그룹 대시보드 · 인사이트 · 분기 보고 · 계열사별 관리(9개사 전환) · 설정(운영/계열사·관리자/도서/감사 로그/메일 기록) |
+| 총괄 관리자 | 그룹 대시보드 · 인사이트 · 분기 보고 · 계열사별 관리(9개사 전환) · 설정(운영/계열사·관리자/도서/감사 로그) |
 
 참가자 겸 관리자는 상단 **관리자 모드 / 참가자 모드** 버튼으로 전환합니다.
 
@@ -120,7 +118,7 @@ Supabase **Edge Functions → Secrets(환경변수)**에 등록:
 
 - 화면 코드는 공개 URL이지만 데이터는 로그인 + RLS(행 단위 권한)로 보호됩니다. 각 사 관리자는 자기 계열사 데이터만 조회됩니다.
 - 브라우저에는 anon key만 들어갑니다. service role key는 Edge Function 안에만 있습니다.
-- Supabase Auth는 이메일을 계정 키로 쓰므로 내부적으로 `{계열사코드}_{사번}@AUTH_EMAIL_DOMAIN` 가상 주소를 사용합니다. 실제 알림 메일은 `notify_email`로 보냅니다.
+- Supabase Auth는 이메일을 계정 키로 쓰므로 내부적으로 `{계열사코드}_{사번}@AUTH_EMAIL_DOMAIN` 가상 주소를 사용합니다. 플랫폼은 메일을 보내지 않습니다(2026-10-21 결정). 독려·계정 안내는 관리자가 화면에서 명단·안내문을 복사해 사내 메일(Outlook)로 보냅니다.
 - 짧은 사번도 최초 비밀번호로 쓸 수 있도록 Auth에 저장할 때 내부 접두어(`rd!`)를 붙입니다. 사용자에게는 보이지 않습니다.
 
 ## 5. 사양서 대비 구현 메모

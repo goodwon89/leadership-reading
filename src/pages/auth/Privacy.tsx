@@ -18,22 +18,12 @@ export function PrivacyText({ info }: { info: Info | null }) {
     <div className="stack" style={{ fontSize: 14.5 }}>
       <p>상상인그룹 인재경영실은 {info?.year ?? 2027}년 리더십 2년차 독서교육(Read to Lead) 운영을 위해 아래와 같이 개인정보를 수집·이용합니다.</p>
       <div className="tbl-wrap"><table><tbody>
-        <tr><th style={{ position: "static", width: 130 }}>수집 항목</th><td>소속 계열사, 사번, 성명, 직급 구분, 직책, 부서, 회사 메일 주소, 교육 중 작성한 내용(사전학습·발표자료·과제), 제출·출석 기록, 접속 일시</td></tr>
-        <tr><th style={{ position: "static" }}>이용 목적</th><td>교육 대상자 확인과 로그인, 회차 운영(일정·그룹 편성), 제출 현황 관리와 수료 판정, 마감·미제출 안내 메일 발송, 분기별 교육 결과 보고</td></tr>
+        <tr><th style={{ position: "static", width: 130 }}>수집 항목</th><td>소속 계열사, 사번, 성명, 직급 구분, 직책, 부서, 교육 중 작성한 내용(사전학습·발표자료·과제), 제출·출석 기록, 접속 일시</td></tr>
+        <tr><th style={{ position: "static" }}>이용 목적</th><td>교육 대상자 확인과 로그인, 회차 운영(일정·그룹 편성), 제출 현황 관리와 수료 판정, 분기별 교육 결과 보고</td></tr>
         <tr><th style={{ position: "static" }}>공개 범위</th><td>발표자료는 같은 토론 그룹 구성원에게 공개됩니다. 사전학습·과제와 개인 정보는 본인, 소속사 HR 담당자, 그룹 인재경영실만 볼 수 있습니다.</td></tr>
         <tr><th style={{ position: "static" }}>보관 기간</th><td>{retention} 보관하며, 이후 지체 없이 파기합니다.</td></tr>
         <tr><th style={{ position: "static" }}>파기 방법</th><td>보관 기간이 지나면 해당 개인의 계정과 교육 기록(제출물·출석 등)을 복구할 수 없도록 삭제합니다.</td></tr>
-        <tr><th style={{ position: "static" }}>처리 위탁</th><td>데이터 보관: Supabase Inc.(서버 위치: 대한민국 서울 리전) · 안내 메일 발송: Resend, Inc.(미국)</td></tr>
-        <tr><th style={{ position: "static" }}>국외 이전</th><td>
-          안내 메일 발송을 위해 아래 정보가 국외로 이전됩니다.
-          <ul style={{ margin: "6px 0 0", paddingLeft: 18 }}>
-            <li>이전받는 자: Resend, Inc.(미국) · 연락처 support@resend.com</li>
-            <li>이전 항목: 성명, 회사 메일 주소, 안내 메일 내용(회차·마감·제출 현황)</li>
-            <li>이전 시기·방법: 안내 메일을 보낼 때마다 암호화된 네트워크로 전송</li>
-            <li>이용 목적·보유 기간: 메일 발송 처리 / 발송 처리 후 업체 정책에 따른 발송 기록 보관 기간까지</li>
-            <li>거부 방법과 효과: 문의처로 요청하면 메일 발송을 중단할 수 있으며, 이 경우 마감·미제출 안내는 플랫폼 화면으로만 확인할 수 있습니다.</li>
-          </ul>
-        </td></tr>
+        <tr><th style={{ position: "static" }}>처리 위탁</th><td>데이터 보관: Supabase Inc.(서버 위치: 대한민국 서울 리전)</td></tr>
         <tr><th style={{ position: "static" }}>담당·문의</th><td>{[info?.privacy_officer, info?.contact_email, info?.contact_phone].filter(Boolean).join(" · ") || "[ ]"}</td></tr>
       </tbody></table></div>
       <p className="small muted">교육 운영에 필요한 최소한의 정보만 수집하며, 교육 목적 외로 이용하지 않습니다. 열람·정정·삭제를 원하면 위 문의처로 요청할 수 있습니다.</p>

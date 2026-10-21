@@ -76,7 +76,7 @@ export default function AdminDashboard() {
       <div className="grid g2">
         <section className="card">
           <div className="card-h"><h3>{m}월 미제출자 <span className="faint">{pending.length}명</span></h3>
-            {pending.length > 0 && <button className="btn sm" onClick={() => setNudge(pending)}>독려 메일</button>}</div>
+            {pending.length > 0 && <button className="btn sm" onClick={() => setNudge(pending)}>독려 안내</button>}</div>
           {pending.length === 0 ? <Empty>열린 양식을 모두 제출했습니다.</Empty> : (
             <div className="stack s8">
               {pending.slice(0, 12).map((p) => (
@@ -89,7 +89,7 @@ export default function AdminDashboard() {
         </section>
         <section className="card">
           <div className="card-h"><h3>수료 위험자 <span className="faint">{risk.length}명</span></h3>
-            {risk.length > 0 && <button className="btn sm" onClick={() => setNudge(risk.map((x) => x.p))}>독려 메일</button>}</div>
+            {risk.length > 0 && <button className="btn sm" onClick={() => setNudge(risk.map((x) => x.p))}>독려 안내</button>}</div>
           {risk.length === 0 ? <Empty>마감이 지난 미제출 건이 없습니다.</Empty> : (
             <div className="stack s8">
               {risk.slice(0, 12).map(({ p, s }) => (

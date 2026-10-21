@@ -58,7 +58,7 @@ create table public.app_settings (
   summary_min int not null default 250,
   summary_max int not null default 400,
   field_min int not null default 50,
-  mail_enabled boolean not null default true,
+  mail_enabled boolean not null default false,
   app_url text,
   contact_email text,                         -- 푸터·개인정보 안내에 표시할 문의처
   contact_phone text,

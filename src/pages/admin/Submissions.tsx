@@ -31,8 +31,8 @@ export default function Submissions() {
   return (
     <div className="stack s24">
       <AdminHead company={company} title="제출 현황" desc="칸을 누르면 제출물을 보고, 개인별 기한 연장·잠금 해제를 할 수 있습니다." right={
-        <select value={nudgeMonth ?? ""} onChange={(e) => setNudgeMonth(e.target.value ? Number(e.target.value) : null)} style={{ width: "auto" }} aria-label="독려 메일 월 선택">
-          <option value="">독려 메일 보내기…</option>{MONTHS.filter((m) => pendingOf(m).length).map((m) => <option key={m} value={m}>{m}월 미제출 {pendingOf(m).length}명</option>)}
+        <select value={nudgeMonth ?? ""} onChange={(e) => setNudgeMonth(e.target.value ? Number(e.target.value) : null)} style={{ width: "auto" }} aria-label="독려 안내 만들기">
+          <option value="">독려 안내 만들기…</option>{MONTHS.filter((m) => pendingOf(m).length).map((m) => <option key={m} value={m}>{m}월 미제출 {pendingOf(m).length}명</option>)}
         </select>} />
       <div className="row">
         <select value={gid} onChange={(e) => setGid(e.target.value)} style={{ width: "auto" }}><option value="">전체 그룹</option>{data.groups.map((g) => <option key={g.id} value={g.id}>{g.name}</option>)}</select>

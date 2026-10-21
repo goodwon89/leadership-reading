@@ -128,7 +128,6 @@ function Setup({ onDone }: { onDone: () => void }) {
           <div className="field"><label>사번</label><input type="text" value={f.emp_no} onChange={set("emp_no")} /></div>
           <div className="field"><label>성명</label><input type="text" value={f.name} onChange={set("name")} /></div>
         </div>
-        <div className="field"><label>알림 메일</label><input type="email" value={f.notify_email} onChange={set("notify_email")} /></div>
         {err && <div className="banner bad">{err}</div>}
         <button className="btn" disabled={busy}>{busy ? "등록 중…" : "총괄 관리자 등록"}</button>
         <p className="tiny faint">등록 후 최초 비밀번호는 입력한 사번이며, 첫 로그인 때 변경합니다.</p>
