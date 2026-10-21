@@ -111,8 +111,8 @@ export default function Members() {
             : confirm.p.is_active ? <p>{confirm.p.name}님을 비활성 처리합니다. 로그인이 막히고 수료 집계에서 제외되며, 기존 제출 기록은 보존됩니다.</p>
             : <p>{confirm.p.name}님을 다시 활성화합니다.</p>} />
       )}
-      {mail && <NudgeModal people={mail} onClose={() => setMail(null)} subject="[리더십 2년차] 독서교육 플랫폼 계정 안내"
-        message={`{name}님, 안녕하세요.\n'27 리더십 2년차 독서교육 플랫폼 계정이 준비되었습니다.\n로그인: 소속 계열사 선택 → 사번 입력 → 최초 비밀번호는 본인 사번입니다.\n첫 로그인 후 반드시 새 비밀번호로 변경해 주세요.`} />}
+      {mail && <NudgeModal people={mail} onClose={() => setMail(null)} subject="[Read to Lead] 리더십 2년차 독서교육 계정 안내"
+        message={`{name}님, 안녕하세요.\n'27 리더십 2년차 독서교육 플랫폼 'Read to Lead' 계정이 준비되었습니다.\n로그인: 소속 계열사 선택 → 사번 입력 → 최초 비밀번호는 본인 사번입니다.\n첫 로그인 후 반드시 새 비밀번호로 변경해 주세요.`} />}
     </div>
   );
 }

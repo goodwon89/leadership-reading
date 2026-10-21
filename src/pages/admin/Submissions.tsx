@@ -75,7 +75,7 @@ export default function Submissions() {
       <p className="tiny faint">테두리가 있는 점은 개인 기한이 연장된 양식입니다.</p>
 
       {detail && <Detail p={detail.p} m={detail.m} tracker={tracker} onClose={() => setDetail(null)} onChanged={reload} />}
-      {nudgeMonth && <NudgeModal people={pendingOf(nudgeMonth)} onClose={() => setNudgeMonth(null)} subject={`[리더십 2년차] ${nudgeMonth}월 회차 제출 안내`}
+      {nudgeMonth && <NudgeModal people={pendingOf(nudgeMonth)} onClose={() => setNudgeMonth(null)} subject={`[Read to Lead] ${nudgeMonth}월 회차 제출 안내`}
         message={`{name}님, 안녕하세요.\n${nudgeMonth}월 회차 양식 중 아직 제출되지 않은 항목이 있습니다.\n12회 전 회차를 모두 제출해야 수료할 수 있으니 플랫폼에서 확인 부탁드립니다.`} />}
     </div>
   );

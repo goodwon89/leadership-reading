@@ -52,9 +52,15 @@ button,input,select,textarea{font:inherit;color:inherit}
 /* header */
 .hdr{position:sticky;top:0;z-index:var(--z-header);background:var(--overlay);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid var(--subtle);padding-top:env(safe-area-inset-top,0px)}
 .hdr-in{display:flex;align-items:center;gap:16px;min-height:60px}
-.brand{display:flex;align-items:baseline;gap:8px;text-decoration:none;flex-shrink:0}
+.brand{display:flex;align-items:center;gap:8px;text-decoration:none;flex-shrink:0}
 .brand b{font-size:17px;letter-spacing:-0.02em}
 .brand span{font-size:12px;color:var(--text-3);font-weight:600}
+.brand .logo{flex:none;border-radius:8px}
+.wordmark{font-weight:800;letter-spacing:-0.035em;white-space:nowrap}
+.brand .wordmark{font-size:18px;font-weight:800;color:var(--ink)}
+.wordmark i{font-style:normal;color:var(--accent)}
+.auth-side .display.brand-display{font-size:88px;line-height:1;letter-spacing:-0.045em}
+.auth-side .steps{font-size:22px;font-weight:600;letter-spacing:-0.02em;opacity:.85;margin:0}
 .nav{display:flex;gap:2px;overflow-x:auto;min-width:0;flex:1;scrollbar-width:none}
 .nav::-webkit-scrollbar{display:none}
 .nav a{padding:7px 12px;border-radius:var(--r-pill);text-decoration:none;font-size:14px;font-weight:600;color:var(--text-2);white-space:nowrap}
@@ -226,6 +232,8 @@ body.has-tabbar .toast{bottom:calc(var(--tabbar-h) + 16px + env(safe-area-inset-
   .auth-wrap{grid-template-columns:1fr}
   .auth-side{padding:32px 24px}
   .auth-side .display{font-size:32px}
+  .auth-side .display.brand-display{font-size:52px}
+  .auth-side .steps{font-size:17px}
   .auth-main{padding:32px 20px 48px}
 }
 

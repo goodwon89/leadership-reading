@@ -65,7 +65,7 @@ function TitleSync() {
   const { pathname } = useLocation();
   useEffect(() => {
     const t = TITLES.find(([re]) => re.test(pathname))?.[1] ?? "홈";
-    document.title = `${t} · 리더십 2년차 독서교육`;
+    document.title = `${t} · Read to Lead`;
   }, [pathname]);
   return null;
 }

@@ -4,7 +4,7 @@ import { useAuth } from "../../state/auth";
 import { callFn, db, DEMO, errMsg } from "../../lib/supabase";
 import { demoAccounts, demoPasswordOf } from "../../lib/demo/client";
 import { DemoBar } from "../../components/Layout";
-import { useToast } from "../../components/ui";
+import { Logo, Wordmark, useToast } from "../../components/ui";
 
 export default function Login() {
   const { me, login } = useAuth();
@@ -48,12 +48,16 @@ export default function Login() {
       <DemoBar />
       <div className="auth-wrap">
         <section className="auth-side">
-          <div className="stack s8">
-            <span className="label" style={{ color: "var(--accent)" }}>상상인그룹 인재경영실</span>
-            <span style={{ fontWeight: 700, opacity: .7 }}>'27 리더십 2년차 교육</span>
+          <div className="row" style={{ gap: 14, flexWrap: "nowrap" }}>
+            <Logo size={44} />
+            <div className="stack" style={{ gap: 2 }}>
+              <span className="label" style={{ color: "var(--accent)" }}>상상인그룹 인재경영실</span>
+              <span style={{ fontWeight: 700, opacity: .7 }}>'27 리더십 2년차 독서교육</span>
+            </div>
           </div>
           <div className="stack s24">
-            <h1 className="display">지정도서 완독 ›<br />인사이트 공유 ›<br />과제 제출</h1>
+            <h1 className="display brand-display"><Wordmark /></h1>
+            <p className="steps">지정도서 완독 › 인사이트 공유 › 과제 제출</p>
             <p className="lead">배움은 생존을 위한 가장 공격적인 투자다</p>
           </div>
           <p style={{ opacity: .6, fontSize: 13 }}>2027년 1~12월 · 월 1회 · 총 12회 · 85명</p>

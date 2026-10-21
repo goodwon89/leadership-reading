@@ -15,7 +15,7 @@ export function PrivacyText({ info }: { info: Info | null }) {
   const blank = (v?: string | null) => v || "[ ]";
   return (
     <div className="stack" style={{ fontSize: 14.5 }}>
-      <p>상상인그룹 인재경영실은 {info?.year ?? 2027}년 리더십 2년차 독서교육 운영을 위해 아래와 같이 개인정보를 수집·이용합니다.</p>
+      <p>상상인그룹 인재경영실은 {info?.year ?? 2027}년 리더십 2년차 독서교육(Read to Lead) 운영을 위해 아래와 같이 개인정보를 수집·이용합니다.</p>
       <div className="tbl-wrap"><table><tbody>
         <tr><th style={{ position: "static", width: 130 }}>수집 항목</th><td>소속 계열사, 사번, 성명, 직급 구분, 직책, 부서, 회사 메일 주소, 교육 중 작성한 내용(사전학습·발표자료·과제), 제출·출석 기록, 접속 일시</td></tr>
         <tr><th style={{ position: "static" }}>이용 목적</th><td>교육 대상자 확인과 로그인, 회차 운영(일정·그룹 편성), 제출 현황 관리와 수료 판정, 마감·미제출 안내 메일 발송, 분기별 교육 결과 보고</td></tr>
@@ -37,7 +37,7 @@ export default function Privacy() {
       <DemoBar />
       <main className="wrap" style={{ maxWidth: 760, paddingTop: 40 }}>
         <div className="stack s24">
-          <div className="stack s8"><span className="label">리더십 2년차 독서교육</span><h1>개인정보 수집·이용 안내</h1></div>
+          <div className="stack s8"><span className="label">Read to Lead · 리더십 2년차 독서교육</span><h1>개인정보 수집·이용 안내</h1></div>
           <PrivacyText info={info.data ?? null} />
           <Link to="/" className="btn line" style={{ alignSelf: "flex-start" }}>돌아가기</Link>
         </div>

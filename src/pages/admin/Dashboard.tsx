@@ -100,7 +100,7 @@ export default function AdminDashboard() {
         </section>
       </div>
 
-      {nudge && <NudgeModal people={nudge} onClose={() => setNudge(null)} subject={`[리더십 2년차] ${m}월 회차 제출 안내`}
+      {nudge && <NudgeModal people={nudge} onClose={() => setNudge(null)} subject={`[Read to Lead] ${m}월 회차 제출 안내`}
         message={`{name}님, 안녕하세요.\n${m}월 회차 양식이 아직 제출되지 않았습니다.\n12회 전 회차를 모두 제출해야 수료할 수 있으니 플랫폼에서 확인 부탁드립니다.`} />}
     </div>
   );

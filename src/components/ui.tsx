@@ -109,6 +109,20 @@ export function BookCover({ title, author, category, url }: { title: string; aut
   );
 }
 
+/** 브랜드 마크: 펼친 책 위로 향하는 화살표 — 읽고(Read) 이끈다(Lead) */
+export function Logo({ size = 28 }: { size?: number }) {
+  return (
+    <svg className="logo" width={size} height={size} viewBox="0 0 64 64" aria-hidden="true">
+      <rect width="64" height="64" rx="14" fill="var(--accent)" />
+      <path d="M23 22.5 32 13.5l9 9" fill="none" stroke="#fff" strokeWidth="4.6" strokeLinecap="round" strokeLinejoin="round" />
+      <path d="M10 31.5c8-3 15-2.6 20.6 1.4V52c-5.6-3.8-12.6-4.2-20.6-1.3z" fill="#fff" />
+      <path d="M54 31.5c-8-3-15-2.6-20.6 1.4V52c5.6-3.8 12.6-4.2 20.6-1.3z" fill="#fff" fillOpacity=".8" />
+    </svg>
+  );
+}
+export const BRAND = "Read to Lead";
+export function Wordmark() { return <span className="wordmark">Read <i>to</i> Lead</span>; }
+
 /** 작은 표지 썸네일 (표지가 없으면 그리지 않음) */
 export function BookThumb({ url, title, w = 56 }: { url?: string | null; title?: string; w?: number }) {
   if (!url) return null;

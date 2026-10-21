@@ -25,7 +25,7 @@ function layout(title: string, lines: string[], url?: string) {
     ? `<p style="margin:24px 0"><a href="${esc(url)}" style="background:#1C1917;color:#fff;padding:12px 20px;border-radius:99px;text-decoration:none;font-weight:700">플랫폼 바로가기</a></p>`
     : "";
   return `<div style="font-family:Pretendard,'Apple SD Gothic Neo','Malgun Gothic',sans-serif;max-width:560px;margin:0 auto;padding:24px;color:#1C1917">
-  <p style="color:#00807F;font-weight:700;margin:0 0 8px">리더십 2년차 독서교육</p>
+  <p style="color:#00807F;font-weight:700;margin:0 0 8px">Read to Lead · 리더십 2년차 독서교육</p>
   <h2 style="margin:0 0 20px;font-size:20px">${title}</h2>${body}${btn}
   <p style="color:#79716B;font-size:12px;margin-top:32px">배움은 생존을 위한 가장 공격적인 투자다 · 상상인그룹 인재경영실</p></div>`;
 }
@@ -69,7 +69,7 @@ Deno.serve(async (req) => {
       let subject: string, html: string, type: string;
       if (body.mode === "accounts") {
         type = "account";
-        subject = "[리더십 2년차] 독서교육 플랫폼 계정 안내";
+        subject = "[Read to Lead] 리더십 2년차 독서교육 계정 안내";
         html = layout(`${esc(p.name)}님, 플랫폼 계정이 준비되었습니다`, [
           `접속 주소: <a href="${esc(appUrl)}">${esc(appUrl)}</a>`,
           `로그인 방법: 계열사 <b>${esc(p.companies?.name)}</b> 선택 → 사번 <b>${esc(p.emp_no)}</b> 입력 → 최초 비밀번호는 <b>본인 사번</b>입니다.`,
@@ -78,7 +78,7 @@ Deno.serve(async (req) => {
         ], appUrl);
       } else {
         type = "manual";
-        subject = String(body.subject || "[리더십 2년차] 제출 안내").replace(/[\r\n]/g, " ").slice(0, 150);
+        subject = String(body.subject || "[Read to Lead] 제출 안내").replace(/[\r\n]/g, " ").slice(0, 150);
         html = layout(esc(subject.replace(/^\[[^\]]+\]\s*/, "")),
           String(body.message || "").split("\n").filter(Boolean).map((l) => esc(l).replace(/\{name\}/g, esc(p.name))), appUrl);
       }
@@ -128,7 +128,7 @@ Deno.serve(async (req) => {
     // 회차 오픈
     if (kstDate(s.open_at) === today) {
       for (const p of people) {
-        tally(await send(db, p.notify_email, `[리더십 2년차] ${s.month}월 회차가 열렸습니다 — ${title}`,
+        tally(await send(db, p.notify_email, `[Read to Lead] ${s.month}월 회차가 열렸습니다 — ${title}`,
           layout(`${s.month}월 회차가 열렸습니다`, [
             `이번 달 도서: <b>${title}</b>${book ? ` · ${esc(book.author)}` : ""}`,
             `토론 일시: ${kstText(s.meet_at)}${s.place ? ` · ${esc(s.place)}` : ""}`,
@@ -145,7 +145,7 @@ Deno.serve(async (req) => {
       for (const p of required) {
         const m = missing(p, ["pre", "presentation"]);
         if (!m.length) continue;
-        tally(await send(db, p.notify_email, `[리더십 2년차] ${m.map((f) => FORM_LABEL[f]).join("·")} 마감 ${d}일 전`,
+        tally(await send(db, p.notify_email, `[Read to Lead] ${m.map((f) => FORM_LABEL[f]).join("·")} 마감 ${d}일 전`,
           layout(`${title} ${m.map((f) => FORM_LABEL[f]).join("·")} 마감이 ${d}일 남았습니다`,
             [`마감: <b>${kstText(s.pre_due_at)}</b>`, "작성 중인 내용은 자동 저장됩니다. 제출 버튼을 눌러야 제출로 인정됩니다."], appUrl),
           { profile_id: p.id, company_id: s.company_id, type: `pre_d${d}`, session_id: s.id, dedupe_key: `pre_d${d}:${s.id}:${p.id}` }));
@@ -155,7 +155,7 @@ Deno.serve(async (req) => {
     if (shift(s.post_due_at, -2) === today) {
       for (const p of required) {
         if (!missing(p, ["post"]).length) continue;
-        tally(await send(db, p.notify_email, `[리더십 2년차] ${s.month}월 과제 마감 2일 전`,
+        tally(await send(db, p.notify_email, `[Read to Lead] ${s.month}월 과제 마감 2일 전`,
           layout(`${title} 과제 마감이 2일 남았습니다`, [`마감: <b>${kstText(s.post_due_at)}</b>`, "토론 주제·인사이트·기대사항을 정리해 제출해 주세요."], appUrl),
           { profile_id: p.id, company_id: s.company_id, type: "post_remind", session_id: s.id, dedupe_key: `post_remind:${s.id}:${p.id}` }));
       }
@@ -171,7 +171,7 @@ Deno.serve(async (req) => {
         const list = overdueByCompany.get(s.company_id) ?? [];
         list.push(`${esc(p.name)}(${esc(p.emp_no)}) · ${s.month}월 ${m.map((f) => FORM_LABEL[f]).join("·")}`);
         overdueByCompany.set(s.company_id, list);
-        tally(await send(db, p.notify_email, `[리더십 2년차] ${s.month}월 ${m.map((f) => FORM_LABEL[f]).join("·")} 미제출 안내`,
+        tally(await send(db, p.notify_email, `[Read to Lead] ${s.month}월 ${m.map((f) => FORM_LABEL[f]).join("·")} 미제출 안내`,
           layout("마감이 지났습니다 — 지연 제출 안내", [
             `${title} ${m.map((f) => FORM_LABEL[f]).join("·")}가 아직 제출되지 않았습니다.`,
             "12회 전 회차를 모두 제출해야 수료할 수 있습니다. 지금 제출하면 '지연 제출'로 기록되며 수료에는 인정됩니다.",
@@ -187,7 +187,7 @@ Deno.serve(async (req) => {
   for (const a of admins) {
     const list = overdueByCompany.get(a.company_id);
     if (list?.length) {
-      tally(await send(db, a.notify_email, `[리더십 2년차] 미제출자 ${list.length}건 안내`,
+      tally(await send(db, a.notify_email, `[Read to Lead] 미제출자 ${list.length}건 안내`,
         layout("마감 후 미제출 현황", [...list.slice(0, 50), list.length > 50 ? `외 ${list.length - 50}건` : ""].filter(Boolean), appUrl),
         { profile_id: a.id, company_id: a.company_id, type: "admin_overdue", dedupe_key: `admin_overdue:${today}:${a.id}` }));
     }
@@ -202,7 +202,7 @@ Deno.serve(async (req) => {
           for (const f of forms) { need++; if (done.has(`${p.id}:${s.month}:${f}`)) got++; }
         }
       }
-      tally(await send(db, a.notify_email, "[리더십 2년차] 주간 제출 현황",
+      tally(await send(db, a.notify_email, "[Read to Lead] 주간 제출 현황",
         layout("주간 제출 현황", [
           `대상자 ${mine.length}명 · 마감 지난 양식 기준 제출률 <b>${need ? Math.round((got / need) * 100) : 0}%</b> (${got}/${need})`,
           "상세 현황은 플랫폼 관리자 화면에서 확인하세요.",
