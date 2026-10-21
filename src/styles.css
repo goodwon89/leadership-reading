@@ -284,3 +284,7 @@ button.card{font:inherit;color:inherit;width:100%}
   .page-h>.row.between>.btns{width:100%}
   .check input{width:22px;height:22px}
 }
+
+/* 총괄 관리자 '계정 화면 보기' 띠 */
+.viewas-bar{position:sticky;top:0;z-index:calc(var(--z-header) + 1);display:flex;align-items:center;justify-content:center;gap:12px;flex-wrap:wrap;padding:8px max(16px, env(safe-area-inset-left, 0px));background:var(--warn-tint);color:var(--warn);font-size:13px;font-weight:600;border-bottom:1px solid var(--border);backdrop-filter:blur(8px)}
+.viewas-bar .btn{background:var(--btn-bg);color:var(--btn-fg)}

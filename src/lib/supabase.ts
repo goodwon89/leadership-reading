@@ -8,7 +8,35 @@ const key = import.meta.env.VITE_SUPABASE_ANON_KEY as string | undefined;
 export const DEMO = import.meta.env.VITE_DEMO === "1" || !url || !key;
 
 // 앱 코드는 supabase-js 와 같은 사용법으로 db 를 호출합니다.
-export const db: any = DEMO ? createDemoClient() : createClient(url!, key!, { auth: { persistSession: true, autoRefreshToken: true } });
+const base: any = DEMO ? createDemoClient() : createClient(url!, key!, { auth: { persistSession: true, autoRefreshToken: true } });
+
+// ---- 읽기 전용 모드 (총괄 관리자의 '계정 화면 보기') -----------------------
+// 켜져 있으면 저장·변경 요청(insert/update/upsert/delete, 변경용 RPC, 서버 함수)을 보내지 않고 오류를 돌려줌
+let readOnly = false;
+export const setReadOnly = (v: boolean) => { readOnly = v; };
+export const isReadOnly = () => readOnly;
+const RO_ERR = { message: "계정 화면 보기 중에는 저장·변경할 수 없습니다." };
+const READ_RPC = ["login_companies", "needs_setup", "public_info", "login_guard"];
+const MUTATE = ["insert", "update", "upsert", "delete"];
+/** 어떤 메서드를 이어 붙여도 마지막에 RO_ERR 로 끝나는 가짜 쿼리 */
+const blocked = (): any => new Proxy(function () {}, {
+  get: (_t, p) => (p === "then" ? (ok: any, bad: any) => Promise.resolve({ data: null, error: RO_ERR }).then(ok, bad) : () => blocked()),
+  apply: () => blocked(),
+});
+const guardQuery = (q: any) => new Proxy(q, {
+  get(t, p) {
+    if (readOnly && typeof p === "string" && MUTATE.includes(p)) return () => blocked();
+    const v = t[p]; return typeof v === "function" ? v.bind(t) : v;
+  },
+});
+export const db: any = new Proxy(base, {
+  get(t, p) {
+    if (p === "from") return (name: string) => guardQuery(t.from(name));
+    if (p === "rpc") return (name: string, args?: any) => (readOnly && !READ_RPC.includes(name) ? Promise.resolve({ data: null, error: RO_ERR }) : t.rpc(name, args));
+    if (p === "functions") return readOnly ? { invoke: async () => ({ data: { error: RO_ERR.message }, error: RO_ERR }) } : t.functions;
+    const v = t[p]; return typeof v === "function" ? v.bind(t) : v;
+  },
+});
 
 /** 오류 메시지를 사용자용 문장으로 */
 export function errMsg(e: any): string {

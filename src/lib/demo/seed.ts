@@ -62,7 +62,7 @@ export function buildSeed(): DemoStore {
   }));
   const sizes = [12, 11, 10, 10, 9, 9, 8, 8, 8];
   const settings = { id: 1, year: 2027, open_offset_days: 14, pre_due_offset_days: 1, post_due_offset_days: 7, final_deadline: "", summary_min: 250, summary_max: 400, field_min: 50, mail_enabled: true, app_url: "https://goodwon89.github.io/leadership-reading/", updated_at: new Date().toISOString(),
-    contact_email: "hr@example.com", contact_phone: "02-0000-0000", privacy_officer: "인재경영실 [ ]", retention_text: "교육 종료 후 [ ]년" };
+    contact_email: "kwjang@sangsanginworld.co.kr", contact_phone: null, privacy_officer: "인재경영실 장근원 과장", retention_text: "교육 종료 후 [ ]년" };
   const profiles: Row[] = [], users: DemoStore["auth"]["users"] = [], groups: Row[] = [], members: Row[] = [], curricula: Row[] = [], sessions: Row[] = [];
   let n = 0;
   companies.forEach((c, ci) => {

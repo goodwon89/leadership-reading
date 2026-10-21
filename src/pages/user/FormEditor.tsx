@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { db, errMsg } from "../../lib/supabase";
+import { useAuth } from "../../state/auth";
 import { emptyContent, FORM_FIELDS, validateContent } from "../../lib/rules";
 import { charLen, fmtDateTime, fmtFull, remaining } from "../../lib/format";
 import { FORM_LABEL, FormType, Profile, Session, Settings, Submission } from "../../lib/types";
@@ -24,6 +25,7 @@ export default function FormEditor({ me, session, form, cell, settings, onSaved 
   const finalPassed = now > new Date(settings.final_deadline);
   const notOpen = !cell.open;
   const locked = (submitted && !!dueAt && now > dueAt) || (!submitted && finalPassed && !!dueAt && now > dueAt);
+  const viewing = !!useAuth().viewAs;
 
   const [content, setContent] = useState<Record<string, any>>(() => sub?.content && Object.keys(sub.content).length ? sub.content : emptyContent(form));
   const [restored, setRestored] = useState(false);
@@ -37,7 +39,7 @@ export default function FormEditor({ me, session, form, cell, settings, onSaved 
   // 브라우저에 남은 작성본 복구 (네트워크 끊김 대비)
   useEffect(() => {
     const b = lsGet(key);
-    if (b && (!sub || new Date(b.at) > new Date(sub.updated_at)) && !locked) { setContent(b.content); setRestored(true); setDirty(true); dirtyRef.current = true; }
+    if (b && (!sub || new Date(b.at) > new Date(sub.updated_at)) && !locked && !viewing) { setContent(b.content); setRestored(true); setDirty(true); dirtyRef.current = true; }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -64,7 +66,7 @@ export default function FormEditor({ me, session, form, cell, settings, onSaved 
   // 30초 자동 임시저장 (제출 전 상태만)
   const saveRef = useRef(save); saveRef.current = save;
   useEffect(() => {
-    if (submitted || locked || notOpen) return;
+    if (submitted || locked || notOpen || viewing) return;
     const t = window.setInterval(() => { if (dirtyRef.current) saveRef.current("draft", true); }, 30000);
     return () => window.clearInterval(t);
   }, [submitted, locked, notOpen]);
@@ -78,7 +80,7 @@ export default function FormEditor({ me, session, form, cell, settings, onSaved 
 
   if (notOpen) return <div className="empty">{fmtDateTime(session.open_at)}에 열립니다.</div>;
 
-  const readOnly = locked;
+  const readOnly = locked || viewing;
   const status = cell.status;
   return (
     <div className="stack s24">
@@ -93,7 +95,8 @@ export default function FormEditor({ me, session, form, cell, settings, onSaved 
 
       {restored && <div className="banner info">저장되지 않았던 작성 내용을 이 기기에서 복구했습니다. 임시저장 또는 제출해 주세요.</div>}
       {!submitted && cell.overdue && !locked && <div className="banner warn">마감이 지났습니다. 지금 제출하면 '지연 제출'로 기록되며 수료에는 인정됩니다.</div>}
-      {locked && submitted && <div className="banner info">마감되어 잠긴 제출물입니다. 수정이 필요하면 소속사 HR 담당자에게 잠금 해제를 요청하세요.</div>}
+      {viewing && <div className="banner info">계정 화면 보기 중입니다. 작성 내용은 읽기 전용으로 표시됩니다.</div>}
+      {!viewing && locked && submitted && <div className="banner info">마감되어 잠긴 제출물입니다. 수정이 필요하면 소속사 HR 담당자에게 잠금 해제를 요청하세요.</div>}
       {locked && !submitted && <div className="banner bad">최종 마감일({fmtFull(settings.final_deadline)})이 지나 제출할 수 없습니다. HR 담당자에게 문의하세요.</div>}
       {submitted && !locked && <div className="banner ok">제출 완료 ({fmtDateTime(sub?.submitted_at)}{sub?.is_late ? " · 지연" : ""}). 마감 전까지 수정 후 다시 제출할 수 있습니다.</div>}
 

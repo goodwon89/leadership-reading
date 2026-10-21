@@ -26,11 +26,11 @@ import Report from "./pages/hq/Report";
 import HqSettings from "./pages/hq/Settings";
 
 function Guard({ children, admin, superOnly, anyMode }: { children: ReactNode; admin?: boolean; superOnly?: boolean; anyMode?: boolean }) {
-  const { ready, me, canAdmin, isSuper, mode } = useAuth();
+  const { ready, me, canAdmin, isSuper, mode, viewAs } = useAuth();
   if (!ready) return <div className="wrap" style={{ paddingTop: 64 }}><Loading /></div>;
   if (!me) return <Navigate to="/login" replace />;
-  if (me.must_change_password) return <Navigate to="/change-password" replace />;
-  if (!me.privacy_agreed_at) return <Navigate to="/consent" replace />;
+  if (!viewAs && me.must_change_password) return <Navigate to="/change-password" replace />;
+  if (!viewAs && !me.privacy_agreed_at) return <Navigate to="/consent" replace />;
   if (superOnly && !isSuper) return <Navigate to="/" replace />;
   if (admin && !canAdmin) return <Navigate to="/" replace />;
   if (!admin && !anyMode && mode === "admin") return <Navigate to={isSuper ? "/hq" : "/admin"} replace />;

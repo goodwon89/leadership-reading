@@ -1,14 +1,21 @@
 import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from "react";
 import { authEmail, authPassword } from "../lib/account";
-import { db, errMsg } from "../lib/supabase";
+import { db, errMsg, setReadOnly } from "../lib/supabase";
 import type { Company, Profile } from "../lib/types";
 import { fmtDateTime } from "../lib/format";
 
 type Mode = "user" | "admin";
 interface AuthState {
   ready: boolean;
+  /** 화면 기준 사용자 (총괄이 '계정 화면 보기' 중이면 그 대상) */
   me: Profile | null;
   company: Company | null;
+  /** 실제 로그인한 사용자 */
+  realMe: Profile | null;
+  /** 총괄 관리자의 '계정 화면 보기' 대상 (읽기 전용) */
+  viewAs: Profile | null;
+  startViewAs: (profileId: string) => Promise<Mode>;
+  stopViewAs: () => void;
   mode: Mode;
   setMode: (m: Mode) => void;
   canAdmin: boolean;
@@ -32,6 +39,9 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [company, setCompany] = useState<Company | null>(null);
   const [mode, setModeState] = useState<Mode>((ls.get(MODE_KEY) as Mode) || "user");
   const [scope, setScope] = useState<string | null>(ls.get(SCOPE_KEY));
+  const [viewAs, setViewAs] = useState<Profile | null>(null);
+  const [viewCompany, setViewCompany] = useState<Company | null>(null);
+  const [viewMode, setViewMode] = useState<Mode>("user");
 
   const loadProfile = useCallback(async (uid: string | null) => {
     if (!uid) { setMe(null); setCompany(null); return; }
@@ -47,6 +57,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (p.role === "company_admin" || !ls.get(SCOPE_KEY)) setScope(p.company_id);
   }, []);
 
+  const stopViewAs = useCallback(() => { setReadOnly(false); setViewAs(null); setViewCompany(null); }, []);
+
   useEffect(() => {
     let alive = true;
     db.auth.getSession().then(async ({ data }: any) => {
@@ -54,7 +66,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       if (alive) setReady(true);
     });
     const { data } = db.auth.onAuthStateChange((event: string, session: any) => {
-      if (event === "SIGNED_OUT") { setMe(null); setCompany(null); }
+      if (event === "SIGNED_OUT") { setMe(null); setCompany(null); setReadOnly(false); setViewAs(null); }
       if (event === "SIGNED_IN" || event === "USER_UPDATED") setTimeout(() => loadProfile(session?.user?.id ?? null), 0);
     });
     return () => { alive = false; data.subscription.unsubscribe(); };
@@ -73,18 +85,33 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     await db.rpc("login_ok");
     await loadProfile(data.session.user.id);
   };
-  const logout = async () => { await db.auth.signOut(); setMe(null); };
+  const logout = async () => { stopViewAs(); await db.auth.signOut(); setMe(null); };
   const refresh = async () => { const { data } = await db.auth.getSession(); await loadProfile(data?.session?.user?.id ?? null); };
 
-  const canAdmin = !!me && me.role !== "user";
-  const isSuper = me?.role === "super_admin";
-  const setMode = (m: Mode) => { setModeState(m); ls.set(MODE_KEY, m); };
-  const effectiveMode: Mode = !me ? "user" : !canAdmin ? "user" : !me.is_participant ? "admin" : mode;
-  const scopeCompanyId = !me ? null : isSuper ? scope ?? me.company_id : me.company_id;
+  /** 총괄 관리자 전용: 다른 계정의 화면을 읽기 전용으로 열람 */
+  const startViewAs = async (profileId: string): Promise<Mode> => {
+    if (me?.role !== "super_admin") throw new Error("총괄 관리자만 사용할 수 있습니다.");
+    const { data: p, error } = await db.from("profiles").select("*").eq("id", profileId).single();
+    if (error || !p) throw new Error("대상자를 찾을 수 없습니다.");
+    if (p.role === "super_admin") throw new Error("총괄 관리자 계정은 볼 수 없습니다.");
+    const { data: c } = await db.from("companies").select("*").eq("id", p.company_id).maybeSingle();
+    const m: Mode = p.role === "user" || p.is_participant ? "user" : "admin";
+    setViewAs(p); setViewCompany(c ?? null); setViewMode(m); setReadOnly(true);
+    return m;
+  };
+
+  const eff = viewAs ?? me;
+  const canAdmin = !!eff && eff.role !== "user";
+  const isSuper = eff?.role === "super_admin";
+  const setMode = (m: Mode) => { if (viewAs) { setViewMode(m); return; } setModeState(m); ls.set(MODE_KEY, m); };
+  const curMode = viewAs ? viewMode : mode;
+  const effectiveMode: Mode = !eff ? "user" : !canAdmin ? "user" : !eff.is_participant ? "admin" : curMode;
+  const scopeCompanyId = !eff ? null : isSuper ? scope ?? eff.company_id : eff.company_id;
 
   return (
     <Ctx.Provider value={{
-      ready, me, company, mode: effectiveMode, setMode, canAdmin, isSuper, scopeCompanyId,
+      ready, me: eff, company: viewAs ? viewCompany : company, realMe: me, viewAs, startViewAs, stopViewAs,
+      mode: effectiveMode, setMode, canAdmin, isSuper, scopeCompanyId,
       setScopeCompanyId: (id) => { setScope(id); ls.set(SCOPE_KEY, id); }, login, logout, refresh,
     }}>{children}</Ctx.Provider>
   );

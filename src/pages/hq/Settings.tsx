@@ -5,6 +5,7 @@ import { fmtFull, fromLocalInput, toLocalInput } from "../../lib/format";
 import type { AuditLog, Book, ClientError, Company, EmailLog, Group, Settings } from "../../lib/types";
 import { ROLE_LABEL } from "../../lib/types";
 import { Empty, Loading, Modal, PageHead, useAsync, useToast } from "../../components/ui";
+import { useOpenViewAs } from "../../components/ViewAs";
 
 type Tab = "ops" | "companies" | "books" | "audit" | "mail" | "errors" | "purge";
 const TABS: [Tab, string][] = [["ops", "운영 설정"], ["companies", "계열사·관리자"], ["books", "도서 마스터"], ["audit", "감사 로그"], ["mail", "메일 발송 기록"], ["errors", "오류 기록"], ["purge", "데이터 파기"]];
@@ -87,6 +88,7 @@ function Companies({ data, reload }: { data: any; reload: () => void }) {
   const toast = useToast();
   const [edit, setEdit] = useState<Company | "new" | null>(null);
   const [assign, setAssign] = useState(false);
+  const openView = useOpenViewAs();
   const admins = data.profiles.filter((p: any) => p.role !== "user");
   const setRole = async (pid: string, role: string) => {
     try { await callFn("admin-users", { action: "set_role", profile_id: pid, role }); toast("권한을 변경했습니다."); reload(); } catch (e) { toast(errMsg(e), true); }
@@ -115,7 +117,7 @@ function Companies({ data, reload }: { data: any; reload: () => void }) {
             <tbody>{admins.map((p: any) => (
               <tr key={p.id}><td>{data.companies.find((c: Company) => c.id === p.company_id)?.name}</td><td><b>{p.name}</b></td><td className="num">{p.emp_no}</td>
                 <td><span className="chip acc">{ROLE_LABEL[p.role as keyof typeof ROLE_LABEL]}</span></td><td>{p.is_participant ? "예" : "-"}</td>
-                <td className="r">{p.role === "company_admin" && <button className="btn xs ghost" onClick={() => setRole(p.id, "user")}>해제</button>}</td></tr>
+                <td className="r nowrap">{p.role === "company_admin" && <><button className="btn xs ghost" onClick={() => openView(p.id)}>화면 보기</button><button className="btn xs ghost" onClick={() => setRole(p.id, "user")}>해제</button></>}</td></tr>
             ))}</tbody>
           </table>
         </div>

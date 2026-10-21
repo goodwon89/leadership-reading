@@ -7,12 +7,14 @@ import { downloadMemberTemplate, MemberRow, parseMemberFile } from "../../lib/ex
 import { Profile, Rank, ROLE_LABEL } from "../../lib/types";
 import { Confirm, Empty, Loading, Modal, useToast } from "../../components/ui";
 import { fmtDate } from "../../lib/format";
+import { useOpenViewAs } from "../../components/ViewAs";
 
 const RANKS: Rank[] = ["대표급", "본부장급", "팀장급"];
 
 export default function Members() {
   const { data, company, companyId, loading, reload } = useAdminData();
-  const { isSuper } = useAuth();
+  const { isSuper, realMe, viewAs } = useAuth();
+  const openView = useOpenViewAs();
   const toast = useToast();
   const [q, setQ] = useState("");
   const [rank, setRank] = useState("");
@@ -86,6 +88,7 @@ export default function Members() {
                 <td className="small nowrap">{p.last_seen_at ? fmtDate(p.last_seen_at) : <span className="chip warn">미접속</span>}</td>
                 <td>{!p.is_active ? <span className="chip">비활성</span> : p.must_change_password ? <span className="chip line">비번 변경 전</span> : <span className="chip ok">사용 중</span>}</td>
                 <td className="r nowrap">
+                  {realMe?.role === "super_admin" && !viewAs && p.role !== "super_admin" && <button className="btn xs ghost" onClick={() => openView(p.id)}>화면 보기</button>}
                   <button className="btn xs ghost" onClick={() => setEdit(p)}>수정</button>
                   <button className="btn xs ghost" onClick={() => setConfirm({ p, kind: "reset" })}>비번 초기화</button>
                   <button className="btn xs ghost" onClick={() => setConfirm({ p, kind: "active" })}>{p.is_active ? "비활성" : "활성"}</button>

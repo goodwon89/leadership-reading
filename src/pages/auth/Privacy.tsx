@@ -23,7 +23,7 @@ export function PrivacyText({ info }: { info: Info | null }) {
         <tr><th style={{ position: "static" }}>보관 기간</th><td>{blank(info?.retention_text)} 보관 후 일괄 파기합니다.</td></tr>
         <tr><th style={{ position: "static" }}>파기 방법</th><td>보관 기간이 지나면 해당 연도의 그룹·회차·제출물 데이터를 복구할 수 없도록 삭제합니다.</td></tr>
         <tr><th style={{ position: "static" }}>처리 위탁</th><td>데이터 보관: Supabase Inc.(서버 위치: 대한민국 서울 리전) · 안내 메일 발송: [메일 발송 업체]</td></tr>
-        <tr><th style={{ position: "static" }}>담당·문의</th><td>{blank(info?.privacy_officer)} · {blank(info?.contact_email)} · {blank(info?.contact_phone)}</td></tr>
+        <tr><th style={{ position: "static" }}>담당·문의</th><td>{[info?.privacy_officer, info?.contact_email, info?.contact_phone].filter(Boolean).join(" · ") || "[ ]"}</td></tr>
       </tbody></table></div>
       <p className="small muted">교육 운영에 필요한 최소한의 정보만 수집하며, 교육 목적 외로 이용하지 않습니다. 열람·정정·삭제를 원하면 위 문의처로 요청할 수 있습니다.</p>
     </div>

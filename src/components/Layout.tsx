@@ -4,6 +4,7 @@ import { useAuth } from "../state/auth";
 import { DEMO } from "../lib/supabase";
 import { resetDemo } from "../lib/demo/client";
 import { Icon, useAsync } from "./ui";
+import { ViewAsBar, ViewAsPicker } from "./ViewAs";
 import { db } from "../lib/supabase";
 
 const USER_NAV = [
@@ -57,7 +58,8 @@ function ThemeBtn() {
 }
 
 export default function Layout({ children }: { children: ReactNode }) {
-  const { me, mode, setMode, canAdmin, isSuper, logout } = useAuth();
+  const { me, mode, setMode, canAdmin, isSuper, logout, realMe, viewAs } = useAuth();
+  const [picker, setPicker] = useState(false);
   const nav = useNavigate();
   const loc = useLocation();
   const userMode = mode === "user";
@@ -79,6 +81,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   return (
     <>
       <DemoBar />
+      <ViewAsBar />
       <header className="hdr">
         <div className="wrap hdr-in">
           <Link to={userMode ? "/" : isSuper ? "/hq" : "/admin"} className="brand"><b>리더십 2년차 독서</b><span>{userMode ? "'27 상상인그룹" : isSuper ? "총괄 관리자" : "관리자"}</span></Link>
@@ -86,6 +89,7 @@ export default function Layout({ children }: { children: ReactNode }) {
             {items.map((i) => <NavLink key={i.to} to={i.to} end={(i as any).end} className={({ isActive }) => (isActive ? "active" : "")}>{i.label}</NavLink>)}
           </nav>
           <div className="hdr-tools">
+            {realMe?.role === "super_admin" && !viewAs && <button className="btn sm line" onClick={() => setPicker(true)}>계정 화면 보기</button>}
             {canAdmin && me?.is_participant && (
               <button className="btn sm sec2" onClick={switchMode}>{userMode ? "관리자 모드" : "참가자 모드"}</button>
             )}
@@ -110,6 +114,7 @@ export default function Layout({ children }: { children: ReactNode }) {
           {USER_NAV.map((i) => <NavLink key={i.to} to={i.to} end={i.end} className={({ isActive }) => (isActive ? "active" : "")}><i.icon />{i.label}</NavLink>)}
         </nav>
       )}
+      {picker && <ViewAsPicker onClose={() => setPicker(false)} />}
     </>
   );
 }
