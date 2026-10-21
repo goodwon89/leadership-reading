@@ -3,7 +3,7 @@ import { useAuth } from "../../state/auth";
 import { useMine } from "../../state/mine";
 import { catLabel, FORM_LABEL, FORM_TYPES } from "../../lib/types";
 import { fmtDate } from "../../lib/format";
-import { Empty, Loading, PageHead, dotClass } from "../../components/ui";
+import { BookThumb, Empty, Loading, PageHead, dotClass } from "../../components/ui";
 
 export default function Library() {
   const { me } = useAuth();
@@ -28,8 +28,13 @@ export default function Library() {
           return (
             <Link key={m} to={s ? `/session/${m}` : "#"} className={`mcard${m === current ? " now" : ""}`}>
               <div className="row between"><span className="m">{m}월{s ? ` · ${fmtDate(s.meet_at)}` : ""}</span><span className={`chip ${cls}`}>{label}</span></div>
-              <b>{b?.title ?? "-"}</b>
-              <span className="tiny faint">{catLabel(b?.category)} · {b?.author}</span>
+              <div className="row" style={{ gap: 12, alignItems: "flex-start", flexWrap: "nowrap" }}>
+                <BookThumb url={b?.cover_url} title={b?.title} w={52} />
+                <div className="stack" style={{ minWidth: 0, gap: 4 }}>
+                  <b>{b?.title ?? "-"}</b>
+                  <span className="tiny faint">{catLabel(b?.category)} · {b?.author}</span>
+                </div>
+              </div>
               <div className="spacer" />
               <div className="row" style={{ gap: 10 }}>
                 {FORM_TYPES.map((f, i) => <span key={f} className="row tiny faint" style={{ gap: 4 }}><span className={`dot ${dotClass(cells[i].status, cells[i].overdue && !rep, cells[i].open)}`} />{FORM_LABEL[f]}</span>)}

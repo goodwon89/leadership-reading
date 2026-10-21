@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { db, must } from "../../lib/supabase";
 import { SAMPLES } from "../../lib/rules";
 import { catLabel, type Book } from "../../lib/types";
-import { Empty, Loading, PageHead, useAsync } from "../../components/ui";
+import { BookThumb, Empty, Loading, PageHead, useAsync } from "../../components/ui";
 
 // 근거: 인재경영실 「'27년도 리더십 2년차 교육(안)」 (2026.10.13) 1쪽 운영 안내 · 2쪽 별첨1 도서 목록 · 3쪽 연간 구성 예시
 const OVERVIEW: [string, string][] = [
@@ -66,7 +66,7 @@ export default function Guide() {
           <div className="tbl-wrap"><table>
             <thead><tr><th className="r">No.</th><th>분야</th><th>도서명</th><th>저자</th><th>핵심 내용</th><th>비고</th></tr></thead>
             <tbody>{books.data.map((b) => (
-              <tr key={b.id}><td className="r">{b.no}</td><td className="nowrap">{catLabel(b.category)}</td><td style={{ minWidth: 160 }}><b>{b.title}</b></td><td className="nowrap small">{b.author}</td><td className="small" style={{ minWidth: 240 }}>{b.summary}</td>
+              <tr key={b.id}><td className="r">{b.no}</td><td className="nowrap">{catLabel(b.category)}</td><td style={{ minWidth: 200 }}><div className="row" style={{ gap: 10, flexWrap: "nowrap" }}><BookThumb url={b.cover_url} title={b.title} w={40} /><b>{b.title}</b></div></td><td className="nowrap small">{b.author}</td><td className="small" style={{ minWidth: 240 }}>{b.summary}</td>
                 <td className="small" style={{ minWidth: 110 }}>{b.recommended_by ? <span className="chip acc" style={{ whiteSpace: "normal" }}>{b.recommended_by}</span> : <span className="faint">-</span>}</td></tr>
             ))}</tbody>
           </table></div>

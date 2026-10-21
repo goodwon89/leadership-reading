@@ -98,6 +98,9 @@ a.card:hover{border-color:var(--text-3)}
 .book-cover{width:100%;aspect-ratio:3/4;max-width:200px;border-radius:var(--r-md);border:1px solid var(--border);background:var(--accent-tint);display:flex;flex-direction:column;justify-content:space-between;padding:18px;color:var(--accent-strong)}
 .book-cover b{font-size:19px;line-height:1.3;color:var(--ink);letter-spacing:-0.02em}
 .book-cover img{width:100%;height:100%;object-fit:cover;border-radius:var(--r-md)}
+.book-cover.has-img{padding:0;aspect-ratio:auto;background:none;border:0;box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.book-cover.has-img img{height:auto;display:block}
+.book-thumb{flex:none;height:auto;aspect-ratio:2/3;object-fit:cover;border-radius:6px;border:1px solid var(--border);background:var(--subtle)}
 
 /* buttons */
 .btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;min-height:42px;padding:0 20px;border-radius:var(--r-pill);border:0;font-weight:700;font-size:15px;letter-spacing:-0.03em;text-decoration:none;cursor:pointer;background:var(--btn-bg);color:var(--btn-fg);white-space:nowrap}

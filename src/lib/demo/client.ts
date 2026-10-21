@@ -5,7 +5,7 @@ import { authEmail, authPassword, validateNewPassword } from "../account";
 import { buildSeed, DemoStore } from "./seed";
 import { validateContent } from "../rules";
 
-const KEY = "lr-demo-v5";
+const KEY = "lr-demo-v6";
 type Row = Record<string, any>;
 type Res = { data: any; error: { message: string } | null; count?: number | null };
 

@@ -99,7 +99,7 @@ export function PageHead({ label, title, desc, right }: { label?: string; title:
 }
 
 export function BookCover({ title, author, category, url }: { title: string; author: string; category?: string; url?: string | null }) {
-  if (url) return <div className="book-cover" style={{ padding: 0 }}><img src={url} alt={title} /></div>;
+  if (url) return <div className="book-cover has-img"><img src={url} alt={`${title} 표지`} loading="lazy" /></div>;
   return (
     <div className="book-cover" aria-hidden="true">
       <span className="label">{category === "경영" ? "경제·경영" : category}</span>
@@ -107,6 +107,12 @@ export function BookCover({ title, author, category, url }: { title: string; aut
       <span className="small" style={{ color: "var(--text-2)" }}>{author}</span>
     </div>
   );
+}
+
+/** 작은 표지 썸네일 (표지가 없으면 그리지 않음) */
+export function BookThumb({ url, title, w = 56 }: { url?: string | null; title?: string; w?: number }) {
+  if (!url) return null;
+  return <img className="book-thumb" src={url} alt={title ? `${title} 표지` : ""} width={w} loading="lazy" />;
 }
 
 /** 간단한 비동기 로더 훅 */

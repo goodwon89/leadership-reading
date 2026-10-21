@@ -5,7 +5,7 @@ import { useMine } from "../../state/mine";
 import { db, errMsg, must } from "../../lib/supabase";
 import { dday, fmtDateTime } from "../../lib/format";
 import { catLabel, FORM_LABEL, FORM_TYPES, FormType, Submission } from "../../lib/types";
-import { Empty, Icon, Loading, StatusChip, useAsync, useToast } from "../../components/ui";
+import { BookThumb, Empty, Icon, Loading, StatusChip, useAsync, useToast } from "../../components/ui";
 import SubmissionView from "../../components/SubmissionView";
 import FormEditor from "./FormEditor";
 
@@ -63,9 +63,12 @@ export default function SessionPage() {
       </div>
 
       <section className="card stack">
-        <div className="stack s8">
-          <span className="label">{catLabel(book?.category)} · {book?.author}</span>
-          <h1>{book?.title ?? "도서 미편성"}</h1>
+        <div className="row" style={{ gap: 16, alignItems: "center", flexWrap: "nowrap" }}>
+          <BookThumb url={book?.cover_url} title={book?.title} w={64} />
+          <div className="stack s8" style={{ minWidth: 0 }}>
+            <span className="label">{catLabel(book?.category)} · {book?.author}</span>
+            <h1>{book?.title ?? "도서 미편성"}</h1>
+          </div>
         </div>
         <div className="grid g4" style={{ gap: 12 }}>
           <div><div className="tiny faint">토론 일시</div><b>{fmtDateTime(s.meet_at)}</b></div>

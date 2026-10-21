@@ -18,3 +18,6 @@ insert into public.books (id, no, category, title, author, summary, recommended_
 on conflict (id) do update set
   category = excluded.category, title = excluded.title, author = excluded.author,
   summary = excluded.summary, recommended_by = excluded.recommended_by;
+
+-- 표지 이미지 (사이트 public/covers/ 에 포함, 페이지 기준 상대 경로)
+update public.books set cover_url = 'covers/book-' || lpad(id::text, 2, '0') || '.jpg' where id between 1 and 12 and cover_url is null;

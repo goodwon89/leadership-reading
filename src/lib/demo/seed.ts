@@ -22,7 +22,7 @@ export const BOOKS = [
   { id: 10, no: 10, category: "인문", title: "죽음의 수용소에서", author: "빅터 프랭클", summary: "삶의 의미 발견을 통한 인간의 회복탄력성과 희망의 가치 제시", recommended_by: "메디카코리아 대표 추천" },
   { id: 11, no: 11, category: "인문", title: "명상록", author: "마르쿠스 아우렐리우스", summary: "전쟁터에서 제국을 이끈 로마 황제의 자기 경계 일기. 감정 통제와 자기 성찰을 통한 올바른 리더십의 중요성 강조", recommended_by: "엠아이텍 대표 추천" },
   { id: 12, no: 12, category: "인문", title: "동물농장", author: "조지 오웰", summary: "권력 집중과 정보 독점이 초래하는 조직의 부패 메커니즘을 우화 형식으로 제시", recommended_by: "엠아이텍 대표 추천" },
-].map((b) => ({ ...b, cover_url: null }));
+].map((b) => ({ ...b, cover_url: `covers/book-${String(b.id).padStart(2, "0")}.jpg` }));
 
 // 데모용 작성 예시 문장 (원문 인용이 아닌 요지 정리)
 const IDEAS: Record<number, [string, string[]]> = {
