@@ -1,4 +1,4 @@
-// 계정 관리 서버 함수: 초기 설정 / 일괄 등록 / 비밀번호 초기화 / 비활성 / 계열사 이동
+// 계정 관리 서버 함수: 초기 설정 / 일괄 등록 / 비밀번호 초기화 / 비활성 / 계열사 이동 / 퇴사 처리
 import {
   admin, audit, authEmail, authPassword, canManage, corsHeaders, getCaller, json,
 } from "../_shared/common.ts";
@@ -136,6 +136,28 @@ Deno.serve(async (req) => {
     await db.from("profiles").update({ company_id: to.id }).eq("id", target.id);
     await audit(db, caller.id, to.id, "계열사 이동", `${who} → ${to.name}`, body.reason);
     return json({ ok: true });
+  }
+
+  // ---- 퇴사 처리: 계정과 교육 기록을 복구할 수 없게 삭제 (개인정보 보관 기간 = 퇴사 시점까지) ----
+  if (action === "purge") {
+    if (target.id === caller.id) return json({ error: "본인 계정은 퇴사 처리할 수 없습니다." }, 400);
+    if (target.role === "super_admin") return json({ error: "총괄 관리자 계정은 퇴사 처리할 수 없습니다." }, 403);
+    if (target.role === "company_admin" && caller.role !== "super_admin") {
+      return json({ error: "관리자 계정의 퇴사 처리는 총괄 관리자만 할 수 있습니다." }, 403);
+    }
+    if (String(body.confirm_emp_no ?? "").trim() !== target.emp_no) return json({ error: "확인용 사번이 일치하지 않습니다." }, 400);
+    const { count } = await db.from("submissions").select("id", { count: "exact", head: true }).eq("profile_id", target.id);
+    // 다른 사람에게 준 기한 연장 기록은 남기되 부여자만 비움
+    await db.from("deadline_overrides").update({ granted_by: null }).eq("granted_by", target.id);
+    const { data: comp } = await db.from("companies").select("code").eq("id", target.company_id).single();
+    if (comp) await db.from("login_attempts").delete().eq("email", authEmail(comp.code, target.emp_no));
+    // auth 계정 삭제 → profiles 및 제출물·출석·그룹 배정·기한 연장이 연쇄 삭제됨
+    const r = await db.auth.admin.deleteUser(target.id);
+    if (r.error) return json({ error: r.error.message }, 400);
+    await db.from("profiles").delete().eq("id", target.id); // 연쇄 삭제가 안 된 경우 대비
+    // 감사 기록에는 성명을 남기지 않고 사번과 삭제 건수만 기록
+    await audit(db, caller.id, target.company_id, "퇴사 처리(기록 삭제)", `사번 ${target.emp_no} · 제출물 ${count ?? 0}건 삭제`, body.reason);
+    return json({ ok: true, deleted_submissions: count ?? 0 });
   }
 
   return json({ error: "알 수 없는 작업입니다." }, 400);

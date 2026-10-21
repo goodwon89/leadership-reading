@@ -17,6 +17,7 @@ export default function Members() {
   const openView = useOpenViewAs();
   const toast = useToast();
   const [q, setQ] = useState("");
+  const [purge, setPurge] = useState<Profile | null>(null);
   const [rank, setRank] = useState("");
   const [grp, setGrp] = useState("");
   const [showInactive, setShowInactive] = useState(false);
@@ -39,6 +40,9 @@ export default function Members() {
     .filter((p) => !q || [p.name, p.emp_no, p.department, p.position].some((x) => x?.includes(q)));
   const allSel = list.length > 0 && list.every((p) => sel.has(p.id));
   const toggle = (id: string) => { const n = new Set(sel); n.has(id) ? n.delete(id) : n.add(id); setSel(n); };
+
+  // 퇴사 처리: 총괄 관리자는 일반·관리자 계정, 각 사 관리자는 일반 계정만 (본인·총괄 관리자 제외)
+  const canPurge = (p: Profile) => !viewAs && p.id !== realMe?.id && p.role !== "super_admin" && (realMe?.role === "super_admin" || p.role === "user");
 
   const doConfirm = async () => {
     if (!confirm) return;
@@ -92,6 +96,7 @@ export default function Members() {
                   <button className="btn xs ghost" onClick={() => setEdit(p)}>수정</button>
                   <button className="btn xs ghost" onClick={() => setConfirm({ p, kind: "reset" })}>비번 초기화</button>
                   <button className="btn xs ghost" onClick={() => setConfirm({ p, kind: "active" })}>{p.is_active ? "비활성" : "활성"}</button>
+                  {canPurge(p) && <button className="btn xs ghost" style={{ color: "var(--bad)" }} onClick={() => setPurge(p)}>퇴사 처리</button>}
                 </td>
               </tr>
             ))}
@@ -111,9 +116,43 @@ export default function Members() {
             : confirm.p.is_active ? <p>{confirm.p.name}님을 비활성 처리합니다. 로그인이 막히고 수료 집계에서 제외되며, 기존 제출 기록은 보존됩니다.</p>
             : <p>{confirm.p.name}님을 다시 활성화합니다.</p>} />
       )}
+      {purge && <PurgeModal p={purge} onClose={() => setPurge(null)} onDone={() => { setPurge(null); reload(); }} />}
       {mail && <NudgeModal people={mail} onClose={() => setMail(null)} subject="[Read to Lead] 리더십 2년차 독서교육 계정 안내"
         message={`{name}님, 안녕하세요.\n'27 리더십 2년차 독서교육 플랫폼 'Read to Lead' 계정이 준비되었습니다.\n로그인: 소속 계열사 선택 → 사번 입력 → 최초 비밀번호는 본인 사번입니다.\n첫 로그인 후 반드시 새 비밀번호로 변경해 주세요.`} />}
     </div>
+  );
+}
+
+function PurgeModal({ p, onClose, onDone }: { p: Profile; onClose: () => void; onDone: () => void }) {
+  const toast = useToast();
+  const [emp, setEmp] = useState("");
+  const [busy, setBusy] = useState(false);
+  const run = async () => {
+    setBusy(true);
+    try {
+      const r = await callFn<{ deleted_submissions: number }>("admin-users", { action: "purge", profile_id: p.id, confirm_emp_no: emp.trim(), reason: "퇴사" });
+      toast(`퇴사 처리했습니다. 계정과 교육 기록(제출물 ${r?.deleted_submissions ?? 0}건)을 삭제했습니다.`);
+      onDone();
+    } catch (e) { toast(errMsg(e), true); } finally { setBusy(false); }
+  };
+  return (
+    <Modal title="퇴사 처리" onClose={onClose} footer={<>
+      <button className="btn line" onClick={onClose}>취소</button>
+      <button className="btn danger" disabled={busy || emp.trim() !== p.emp_no} onClick={run}>{busy ? "처리 중…" : "삭제하고 퇴사 처리"}</button>
+    </>}>
+      <div className="stack">
+        <p><b>{p.name}({p.emp_no})</b>님의 계정과 교육 기록을 <b>복구할 수 없도록 삭제</b>합니다.</p>
+        <ul className="small" style={{ margin: 0, paddingLeft: 18 }}>
+          <li>삭제: 로그인 계정, 인적 정보, 사전학습·발표자료·과제 제출물, 출석, 그룹 배정, 기한 연장 기록</li>
+          <li>Facilitator로 지정된 회차는 Facilitator가 비워지니 다시 지정해 주세요.</li>
+          <li>제출 현황·수료 집계에서도 빠집니다. 필요한 기록은 먼저 <b>내보내기</b>로 받아 두세요.</li>
+          <li>감사 기록에는 처리자, 일시, 사번, 삭제 건수만 남습니다.</li>
+        </ul>
+        <div className="banner bad"><span>휴직·잠시 대상 제외라면 퇴사 처리 대신 <b>비활성</b>을 쓰세요. 비활성은 기록이 보존됩니다.</span></div>
+        <div className="field"><label htmlFor="purge-emp">확인을 위해 사번 <b>{p.emp_no}</b>를 입력하세요</label>
+          <input id="purge-emp" type="text" value={emp} onChange={(e) => setEmp(e.target.value)} autoComplete="off" /></div>
+      </div>
+    </Modal>
   );
 }
 

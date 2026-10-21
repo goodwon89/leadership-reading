@@ -291,6 +291,22 @@ async function invoke(name: string, { body }: { body: Row }): Promise<{ data: an
       const to = T.companies.find((c) => c.id === body.company_id); if (!to) return fail("이동할 계열사를 찾을 수 없습니다.");
       u.email = authEmail(to.code, t.emp_no); T.group_members = T.group_members.filter((m) => m.profile_id !== t.id); t.company_id = to.id;
       audit(to.id, "계열사 이동", `${who} → ${to.name}`, body.reason);
+    } else if (body.action === "purge") {
+      if (t.id === caller.id) return fail("본인 계정은 퇴사 처리할 수 없습니다.");
+      if (t.role === "super_admin") return fail("총괄 관리자 계정은 퇴사 처리할 수 없습니다.");
+      if (t.role === "company_admin" && caller.role !== "super_admin") return fail("관리자 계정의 퇴사 처리는 총괄 관리자만 할 수 있습니다.");
+      if (String(body.confirm_emp_no ?? "").trim() !== t.emp_no) return fail("확인용 사번이 일치하지 않습니다.");
+      const n = T.submissions.filter((x) => x.profile_id === t.id).length;
+      T.submissions = T.submissions.filter((x) => x.profile_id !== t.id);
+      T.attendance = T.attendance.filter((x) => x.profile_id !== t.id);
+      T.group_members = T.group_members.filter((x) => x.profile_id !== t.id);
+      T.deadline_overrides = T.deadline_overrides.filter((x) => x.profile_id !== t.id).map((x) => (x.granted_by === t.id ? { ...x, granted_by: null } : x));
+      T.sessions.forEach((x) => { if (x.facilitator_id === t.id) x.facilitator_id = null; });
+      T.email_logs.forEach((x) => { if (x.profile_id === t.id) x.profile_id = null; });
+      T.profiles = T.profiles.filter((x) => x.id !== t.id);
+      store.auth.users = store.auth.users.filter((x) => x.id !== t.id); delete store.login[u.email];
+      audit(t.company_id, "퇴사 처리(기록 삭제)", `사번 ${t.emp_no} · 제출물 ${n}건 삭제`, body.reason);
+      save(); return { data: { ok: true, deleted_submissions: n }, error: null };
     } else return fail("알 수 없는 작업입니다.");
     save(); return { data: { ok: true }, error: null };
   }
