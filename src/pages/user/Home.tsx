@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../state/auth";
 import { useMine } from "../../state/mine";
 import { catLabel, FORM_LABEL, FORM_TYPES } from "../../lib/types";
-import { dday, fmtDateTime, remaining } from "../../lib/format";
+import { dday, fmtDateTime, remaining, coverUrl } from "../../lib/format";
 import { TOTAL_FORMS } from "../../lib/metrics";
 import { Bar, BookCover, Empty, Loading, StatusChip } from "../../components/ui";
 
@@ -53,7 +53,7 @@ export default function Home() {
               {book.recommended_by && <div><span className="chip acc">{book.recommended_by}</span></div>}
             </div>
             <div className="row" style={{ justifyContent: "flex-end", alignItems: "flex-start" }}>
-              <BookCover title={book.title} author={book.author} category={book.category} url={book.cover_url} />
+              <BookCover title={book.title} author={book.author} category={book.category} url={coverUrl(book)} />
             </div>
           </div>
         </section>

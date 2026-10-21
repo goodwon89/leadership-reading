@@ -44,3 +44,7 @@ export function remaining(target: string, now = new Date()) {
 }
 export const pct = (a: number, b: number) => (b ? Math.round((a / b) * 1000) / 10 : 0);
 export const charLen = (s: string) => [...(s ?? "").replace(/\s+/g, " ").trim()].length;
+
+/** 도서 표지: 직접 지정한 주소가 우선, 없으면 기본 12권(id 1~12)의 내장 표지 */
+export const coverUrl = (b?: { id: number; cover_url: string | null } | null): string | null =>
+  !b ? null : b.cover_url || (b.id >= 1 && b.id <= 12 ? `covers/book-${String(b.id).padStart(2, "0")}.jpg` : null);

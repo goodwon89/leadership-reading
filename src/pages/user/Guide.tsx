@@ -1,3 +1,4 @@
+import { coverUrl } from "../../lib/format";
 import { Link } from "react-router-dom";
 import { db, must } from "../../lib/supabase";
 import { SAMPLES } from "../../lib/rules";
@@ -66,7 +67,7 @@ export default function Guide() {
           <div className="tbl-wrap"><table>
             <thead><tr><th className="r">No.</th><th>분야</th><th>도서명</th><th>저자</th><th>핵심 내용</th><th>비고</th></tr></thead>
             <tbody>{books.data.map((b) => (
-              <tr key={b.id}><td className="r">{b.no}</td><td className="nowrap">{catLabel(b.category)}</td><td style={{ minWidth: 200 }}><div className="row" style={{ gap: 10, flexWrap: "nowrap" }}><BookThumb url={b.cover_url} title={b.title} w={40} /><b>{b.title}</b></div></td><td className="nowrap small">{b.author}</td><td className="small" style={{ minWidth: 240 }}>{b.summary}</td>
+              <tr key={b.id}><td className="r">{b.no}</td><td className="nowrap">{catLabel(b.category)}</td><td style={{ minWidth: 200 }}><div className="row" style={{ gap: 10, flexWrap: "nowrap" }}><BookThumb url={coverUrl(b)} title={b.title} w={40} /><b>{b.title}</b></div></td><td className="nowrap small">{b.author}</td><td className="small" style={{ minWidth: 240 }}>{b.summary}</td>
                 <td className="small" style={{ minWidth: 110 }}>{b.recommended_by ? <span className="chip acc" style={{ whiteSpace: "normal" }}>{b.recommended_by}</span> : <span className="faint">-</span>}</td></tr>
             ))}</tbody>
           </table></div>

@@ -3,7 +3,7 @@ import { Link, Navigate, useNavigate, useParams, useSearchParams } from "react-r
 import { useAuth } from "../../state/auth";
 import { useMine } from "../../state/mine";
 import { db, errMsg, must } from "../../lib/supabase";
-import { dday, fmtDateTime } from "../../lib/format";
+import { dday, fmtDateTime, coverUrl } from "../../lib/format";
 import { catLabel, FORM_LABEL, FORM_TYPES, FormType, Submission } from "../../lib/types";
 import { BookThumb, Empty, Icon, Loading, StatusChip, useAsync, useToast } from "../../components/ui";
 import SubmissionView from "../../components/SubmissionView";
@@ -64,7 +64,7 @@ export default function SessionPage() {
 
       <section className="card stack">
         <div className="row" style={{ gap: 16, alignItems: "center", flexWrap: "nowrap" }}>
-          <BookThumb url={book?.cover_url} title={book?.title} w={64} />
+          <BookThumb url={coverUrl(book)} title={book?.title} w={64} />
           <div className="stack s8" style={{ minWidth: 0 }}>
             <span className="label">{catLabel(book?.category)} · {book?.author}</span>
             <h1>{book?.title ?? "도서 미편성"}</h1>

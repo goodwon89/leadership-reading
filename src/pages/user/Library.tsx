@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 import { useAuth } from "../../state/auth";
 import { useMine } from "../../state/mine";
 import { catLabel, FORM_LABEL, FORM_TYPES } from "../../lib/types";
-import { fmtDate } from "../../lib/format";
+import { fmtDate, coverUrl } from "../../lib/format";
 import { BookThumb, Empty, Loading, PageHead, dotClass } from "../../components/ui";
 
 export default function Library() {
@@ -29,7 +29,7 @@ export default function Library() {
             <Link key={m} to={s ? `/session/${m}` : "#"} className={`mcard${m === current ? " now" : ""}`}>
               <div className="row between"><span className="m">{m}월{s ? ` · ${fmtDate(s.meet_at)}` : ""}</span><span className={`chip ${cls}`}>{label}</span></div>
               <div className="row" style={{ gap: 12, alignItems: "flex-start", flexWrap: "nowrap" }}>
-                <BookThumb url={b?.cover_url} title={b?.title} w={52} />
+                <BookThumb url={coverUrl(b)} title={b?.title} w={52} />
                 <div className="stack" style={{ minWidth: 0, gap: 4 }}>
                   <b>{b?.title ?? "-"}</b>
                   <span className="tiny faint">{catLabel(b?.category)} · {b?.author}</span>
