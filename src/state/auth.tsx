@@ -95,7 +95,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error || !p) throw new Error("대상자를 찾을 수 없습니다.");
     if (p.role === "super_admin") throw new Error("총괄 관리자 계정은 볼 수 없습니다.");
     const { data: c } = await db.from("companies").select("*").eq("id", p.company_id).maybeSingle();
-    const m: Mode = p.role === "user" || p.is_participant ? "user" : "admin";
+    // 관리자 계정은 관리자 화면부터 연다 (참가자 겸 관리자는 상단 '참가자 모드'로 전환 가능)
+    const m: Mode = p.role === "user" ? "user" : "admin";
     setViewAs(p); setViewCompany(c ?? null); setViewMode(m); setReadOnly(true);
     return m;
   };

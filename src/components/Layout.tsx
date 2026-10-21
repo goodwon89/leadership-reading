@@ -63,7 +63,7 @@ export default function Layout({ children }: { children: ReactNode }) {
   const nav = useNavigate();
   const loc = useLocation();
   const userMode = mode === "user";
-  const info = useAsync<{ contact_email: string | null; contact_phone: string | null; year: number } | null>(async () => { const { data } = await db.rpc("public_info"); return (Array.isArray(data) ? data[0] : data) ?? null; }, []);
+  const info = useAsync<{ contact_email: string | null; contact_phone: string | null; privacy_officer: string | null; year: number } | null>(async () => { const { data } = await db.rpc("public_info"); return (Array.isArray(data) ? data[0] : data) ?? null; }, []);
   const items = userMode ? USER_NAV : isSuper ? SUPER_NAV : ADMIN_NAV;
 
   useEffect(() => {
@@ -103,7 +103,7 @@ export default function Layout({ children }: { children: ReactNode }) {
         <div className="wrap">
           <span>배움은 생존을 위한 가장 공격적인 투자다</span>
           <span className="row" style={{ gap: "4px 14px" }}>
-            {(info.data?.contact_email || info.data?.contact_phone) && <span>문의 · {[info.data?.contact_email, info.data?.contact_phone].filter(Boolean).join(" · ")}</span>}
+            {(info.data?.contact_email || info.data?.contact_phone) && <span>문의 · {[info.data?.privacy_officer, info.data?.contact_email, info.data?.contact_phone].filter(Boolean).join(" · ")}</span>}
             <Link to="/privacy">개인정보 수집·이용 안내</Link>
             <span>© {info.data?.year ?? 2027} 상상인그룹 인재경영실</span>
           </span>
