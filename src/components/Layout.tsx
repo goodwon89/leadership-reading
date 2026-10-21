@@ -3,7 +3,7 @@ import { Link, NavLink, useLocation, useNavigate } from "react-router-dom";
 import { useAuth } from "../state/auth";
 import { DEMO } from "../lib/supabase";
 import { resetDemo } from "../lib/demo/client";
-import { Icon, Logo, Wordmark, useAsync } from "./ui";
+import { Icon, Wordmark, useAsync } from "./ui";
 import { ViewAsBar, ViewAsPicker } from "./ViewAs";
 import { db } from "../lib/supabase";
 
@@ -84,7 +84,7 @@ export default function Layout({ children }: { children: ReactNode }) {
       <ViewAsBar />
       <header className="hdr">
         <div className="wrap hdr-in">
-          <Link to={userMode ? "/" : isSuper ? "/hq" : "/admin"} className="brand" aria-label="Read to Lead 홈"><Logo size={28} /><b><Wordmark /></b><span>{userMode ? "'27 상상인그룹" : isSuper ? "총괄 관리자" : "관리자"}</span></Link>
+          <Link to={userMode ? "/" : isSuper ? "/hq" : "/admin"} className="brand" aria-label="Read to Lead 홈"><b><Wordmark /></b><span>{userMode ? "'27 상상인그룹" : isSuper ? "총괄 관리자" : "관리자"}</span></Link>
           <nav className="nav" aria-label="주 메뉴">
             {items.map((i) => <NavLink key={i.to} to={i.to} end={(i as any).end} className={({ isActive }) => (isActive ? "active" : "")}>{i.label}</NavLink>)}
           </nav>
