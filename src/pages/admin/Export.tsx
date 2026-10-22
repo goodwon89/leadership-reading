@@ -12,12 +12,15 @@ const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1);
 export default function ExportPage() {
   const { data, tracker, company, companyId, loading } = useAdminData();
   const toast = useToast();
-  const [month, setMonth] = useState(1);
-  const [quarter, setQuarter] = useState(1);
+  const [monthSel, setMonth] = useState<number | null>(null);
+  const [quarterSel, setQuarter] = useState<number | null>(null);
   const [busy, setBusy] = useState("");
   if (loading && !data) return <Loading />;
   if (!data || !tracker || !company) return <Empty>데이터를 불러오지 못했습니다.</Empty>;
   const today = kstDay(new Date()).replace(/-/g, "");
+  // 기본값: 현재 진행 회차의 월·분기
+  const cur = tracker.currentMonth(data.profiles.map((p) => p.id)) ?? 1;
+  const month = monthSel ?? cur, quarter = quarterSel ?? Math.ceil(cur / 3);
 
   const run = async (key: string, fn: () => Promise<void>) => { setBusy(key); try { await fn(); } catch (e) { toast(errMsg(e), true); } finally { setBusy(""); } };
   const exportMonth = () => run("m", async () => {

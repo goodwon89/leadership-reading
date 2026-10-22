@@ -104,6 +104,7 @@ function EditSession({ s, members, settings, onClose, onSaved }: { s: Session; m
     const r = { meet_at: fromLocalInput(f.meet_at), place: f.place || null, online_url: f.online_url || null, facilitator_id: f.facilitator_id || null, topic: f.topic || null,
       open_at: fromLocalInput(f.open_at), pre_due_at: fromLocalInput(f.pre_due_at), post_due_at: fromLocalInput(f.post_due_at) };
     if (!(r.open_at < r.pre_due_at && r.pre_due_at <= r.post_due_at)) return toast("오픈 < 사전 마감 ≤ 과제 마감 순서여야 합니다.", true);
+    if (!(r.pre_due_at <= r.meet_at && r.meet_at <= r.post_due_at)) return toast("사전학습·발표 마감은 토론 전, 과제 마감은 토론 후로 정해 주세요.", true);
     const { error } = await db.from("sessions").update(r).eq("id", s.id);
     if (error) return toast(errMsg(error), true);
     toast("회차 정보를 저장했습니다."); onSaved();

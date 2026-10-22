@@ -43,6 +43,7 @@ function beforeWrite(table: string, row: Row, old: Row | null): string | null {
     if (row.profile_id !== me()) return "본인 제출물만 작성할 수 있습니다.";
     const now = new Date();
     if (now < new Date(s.open_at)) return "아직 열리지 않은 회차입니다.";
+    if (row.form_type === "post" && now < new Date(s.meet_at)) return "과제는 토론 이후에 작성할 수 있습니다.";
     const o = T.deadline_overrides.find((x) => x.session_id === row.session_id && x.profile_id === row.profile_id && x.form_type === row.form_type);
     const due = new Date(o?.new_due_at ?? (row.form_type === "post" ? s.post_due_at : s.pre_due_at));
     if (old && old.status === "submitted") {

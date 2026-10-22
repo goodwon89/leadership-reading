@@ -242,14 +242,14 @@ begin
     end if;
     return new;
   end if;
-  -- 본인: 알림 메일만 변경 가능
+  -- 본인: 기본 정보 변경 불가 (HR 담당자만)
   if old.id = auth.uid() then
     if (new.company_id, new.emp_no, new.name, new.rank_level, new.position, new.department,
         new.role, new.is_participant, new.must_change_password, new.is_active)
        is distinct from
        (old.company_id, old.emp_no, old.name, old.rank_level, old.position, old.department,
         old.role, old.is_participant, old.must_change_password, old.is_active) then
-      raise exception '본인은 알림 메일 주소만 변경할 수 있습니다.';
+      raise exception '본인 정보는 소속사 HR 담당자만 변경할 수 있습니다.';
     end if;
     return new;
   end if;
@@ -330,6 +330,9 @@ begin
   end if;
   if now() < s.open_at then
     raise exception '아직 열리지 않은 회차입니다.';
+  end if;
+  if new.form_type = 'post' and now() < s.meet_at then
+    raise exception '과제는 토론 이후에 작성할 수 있습니다.';
   end if;
 
   due := public.effective_due(new.session_id, new.profile_id, new.form_type);

@@ -37,7 +37,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [ready, setReady] = useState(false);
   const [me, setMe] = useState<Profile | null>(null);
   const [company, setCompany] = useState<Company | null>(null);
-  const [mode, setModeState] = useState<Mode>((ls.get(MODE_KEY) as Mode) || "user");
+  const [mode, setModeState] = useState<Mode>("user");
   const [scope, setScope] = useState<string | null>(ls.get(SCOPE_KEY));
   const [viewAs, setViewAs] = useState<Profile | null>(null);
   const [viewCompany, setViewCompany] = useState<Company | null>(null);
@@ -54,6 +54,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     // 참가자가 아닌 관리자는 관리자 모드로 고정, 일반 사용자는 참가자 모드로 고정
     if (!admin) setModeState("user");
     else if (!p.is_participant) setModeState("admin");
+    // 관리자 겸 참가자: 이 사람이 마지막으로 쓴 모드 (같은 기기의 다른 계정 설정이 섞이지 않게 사람별로 저장)
+    else setModeState((ls.get(`${MODE_KEY}:${p.id}`) as Mode) || "user");
     if (p.role === "company_admin" || !ls.get(SCOPE_KEY)) setScope(p.company_id);
   }, []);
 
@@ -104,7 +106,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const eff = viewAs ?? me;
   const canAdmin = !!eff && eff.role !== "user";
   const isSuper = eff?.role === "super_admin";
-  const setMode = (m: Mode) => { if (viewAs) { setViewMode(m); return; } setModeState(m); ls.set(MODE_KEY, m); };
+  const setMode = (m: Mode) => { if (viewAs) { setViewMode(m); return; } setModeState(m); if (me) ls.set(`${MODE_KEY}:${me.id}`, m); };
   const curMode = viewAs ? viewMode : mode;
   const effectiveMode: Mode = !eff ? "user" : !canAdmin ? "user" : !eff.is_participant ? "admin" : curMode;
   const scopeCompanyId = !eff ? null : isSuper ? scope ?? eff.company_id : eff.company_id;

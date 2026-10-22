@@ -48,7 +48,7 @@ function Ops({ settings, onSaved }: { settings: Settings; onSaved: () => void })
       <div className="grid g3">
         <div className="field"><label>운영 연도</label><input type="number" value={f.year} onChange={num("year")} /></div>
         <div className="field"><label>최종 마감일 (지연 제출 한도)</label><input type="datetime-local" value={f.final_deadline} onChange={(e) => setF({ ...f, final_deadline: e.target.value })} /></div>
-        <div className="field"><label>플랫폼 주소 (메일 링크)</label><input type="url" value={f.app_url ?? ""} onChange={(e) => setF({ ...f, app_url: e.target.value })} /></div>
+        <div className="field"><label>플랫폼 주소</label><input type="url" value={f.app_url ?? ""} onChange={(e) => setF({ ...f, app_url: e.target.value })} /></div>
       </div>
       <div>
         <span className="flabel">회차 기본 일정 (토론일 D 기준)</span>

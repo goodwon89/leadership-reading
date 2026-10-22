@@ -51,7 +51,8 @@ export class Tracker {
     const status: CellStatus = !sub ? "none" : sub.status === "draft" ? "draft" : sub.is_late ? "late" : "submitted";
     if (!session) return { status, session: null, due: null, open: false, overdue: false, extended: false, sub };
     const due = this.due(session, pid, f);
-    const open = new Date(session.open_at) <= this.now;
+    // 과제는 '교육 후' 양식이므로 토론 시작 시각부터 작성 가능
+    const open = new Date(f === "post" ? session.meet_at : session.open_at) <= this.now;
     const done = status === "submitted" || status === "late";
     return { status, session, due, open, overdue: !done && new Date(due) < this.now, extended: !!this.override(session.id, pid, f), sub };
   }

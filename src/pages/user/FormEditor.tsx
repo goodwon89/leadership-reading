@@ -78,7 +78,7 @@ export default function FormEditor({ me, session, form, cell, settings, onSaved 
     setConfirm(true);
   };
 
-  if (notOpen) return <div className="empty">{fmtDateTime(session.open_at)}에 열립니다.</div>;
+  if (notOpen) return <div className="empty">{form === "post" ? `과제는 토론(${fmtDateTime(session.meet_at)}) 이후에 작성합니다.` : `${fmtDateTime(session.open_at)}에 열립니다.`}</div>;
 
   const readOnly = locked || viewing;
   const status = cell.status;
